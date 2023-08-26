@@ -1,0 +1,57 @@
+{
+	"env": {
+		"browser": true,
+		"node": true
+	},
+	"extends": [
+		"eslint:recommended",
+		"plugin:@typescript-eslint/recommended",
+		"plugin:@typescript-eslint/strict",
+		"plugin:prettier/recommended",
+		"plugin:security-node/recommended",
+		"plugin:solid/typescript"
+	],
+	"parser": "@typescript-eslint/parser",
+	"parserOptions": {
+		"ecmaVersion": "latest",
+		"project": [
+			"tsconfig.json"
+		],
+		"sourceType": "module"
+	},
+	"plugins": [
+		"@limegrass/import-alias",
+		"@typescript-eslint",
+		"prettier",
+		"security-node",
+		"solid"
+	],
+	"rules": {
+		"@limegrass/import-alias/import-alias": "error",
+		"@typescript-eslint/ban-types": [
+			"error",
+			{
+				"types": {
+					"{}": false
+				}
+			}
+		],
+		"@typescript-eslint/consistent-type-definitions": "off",
+		"@typescript-eslint/no-explicit-any": "off",
+		"@typescript-eslint/no-non-null-assertion": "off",
+		"@typescript-eslint/no-this-alias": "off",
+		"@typescript-eslint/no-unnecessary-condition": "off",
+		"@typescript-eslint/non-nullable-type-assertion-style": "off",
+		"camelcase": [
+			"warn",
+			{
+				"properties": "always"
+			}
+		],
+		"no-extra-semi": "error",
+		"no-var": "error",
+		"no-undef": "off",
+		"prefer-const": "warn",
+		"prettier/prettier": "warn"
+	}
+}

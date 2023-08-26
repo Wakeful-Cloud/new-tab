@@ -1,0 +1,44 @@
+/* Root styles */
+:root {
+  @apply antialiased text-black;
+  overflow-wrap: break-word;
+  scroll-behavior: smooth;
+}
+
+:root.dark {
+  @apply text-white;
+}
+
+/* Utilities */
+.acrylic {
+  @apply bg-light-100/40 dark:bg-dark-300/30 backdrop-blur;
+}
+
+.centered-col {
+  @apply flex flex-col items-center justify-center;
+}
+
+.hcentered-col {
+  @apply flex flex-col items-center;
+}
+
+.vcentered-col {
+  @apply flex items-center justify-center;
+}
+
+.centered-row {
+  @apply flex flex-row items-center justify-center;
+}
+
+.hcentered-row {
+  @apply flex flex-row items-center;
+}
+
+.vcentered-row {
+  @apply flex flex-row justify-center;
+}
+
+/* Miscellaneous styles */
+.root {
+  @apply absolute min-h-full min-w-full;
+}
