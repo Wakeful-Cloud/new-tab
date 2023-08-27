@@ -10,7 +10,7 @@
     "dev": "vite",
     "lint": "eslint .",
     "pack:chrome": "crx3 pack dist --pem new-tab.crx.pem --outfile new-tab.crx",
-    "pack:firefox": "web-ext sign --source-dir dist --channel unlisted",
+    "pack:firefox": "web-ext sign --source-dir dist --channel unlisted && cp web-ext-artifacts/*.xpi new-tab.xpi",
     "preview": "vite preview"
   },
   "dependencies": {

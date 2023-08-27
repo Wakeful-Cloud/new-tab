@@ -66,15 +66,13 @@ jobs:
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: new-tab.crx
-          file_glob: true
-          asset_name: new-tab.crx
+          asset_name: new-tab.crx.disabled
           tag: ${{ github.ref }}
 
       - name: Upload the XPI
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: web-ext-artifacts/*.xpi
-          file_glob: true
+          file: new-tab.xpi
           asset_name: new-tab.xpi
           tag: ${{ github.ref }}
