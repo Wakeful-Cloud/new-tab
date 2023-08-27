@@ -9,6 +9,10 @@
   @apply text-white;
 }
 
+body {
+  @apply text-[100%];
+}
+
 /* Utilities */
 .acrylic {
   @apply bg-light-100/40 dark:bg-dark-300/30 backdrop-blur;
