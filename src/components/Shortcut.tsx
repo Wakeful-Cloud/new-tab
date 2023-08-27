@@ -20,7 +20,7 @@ const Shortcut: Component<ShortcutProps> = props => {
   return (
     <div>
       <a
-        class="centered-col rounded-xl m-2 p-1"
+        class="centered-col rounded-xl m-4 p-1"
         href={props.metadata.link}
         rel="noopener noreferrer"
         onContextMenu={onContextMenu}

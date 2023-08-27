@@ -170,7 +170,7 @@ const App: Component = () => {
         <ArrowClockwise size="1.5rem" />
       </button>
 
-      <div class="centered-row flex-wrap">
+      <div class="centered-row flex-wrap m-12">
         <For each={settings.shortcuts}>
           {item => <Shortcut metadata={item} onEdit={() => onEdit(item)} />}
         </For>

@@ -100,7 +100,7 @@ const ShortcutMode: Component<ShortcutModeProps> = props => {
           />
         </FormField>
 
-        <FormField label="ULinkRL">
+        <FormField label="URL">
           <TextBox
             leading={<Link />}
             onChange={setLink}
