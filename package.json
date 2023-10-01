@@ -16,7 +16,7 @@
   "dependencies": {
     "@types/chrome": "^0.0.245",
     "@types/lodash-es": "^4.17.9",
-    "@types/node": "^20.5.9",
+    "@types/node": "^20.8.0",
     "@unocss/preset-wind": "^0.55.7",
     "@unocss/transformer-directives": "^0.55.7",
     "idb-keyval": "^6.2.1",
