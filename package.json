@@ -15,7 +15,7 @@
   },
   "dependencies": {
     "@types/chrome": "^0.0.246",
-    "@types/lodash-es": "^4.17.9",
+    "@types/lodash-es": "^4.17.10",
     "@types/node": "^20.8.2",
     "@unocss/preset-wind": "^0.56.5",
     "@unocss/transformer-directives": "^0.56.5",
