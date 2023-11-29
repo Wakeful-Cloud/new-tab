@@ -2,6 +2,7 @@
 *.crx
 *.pem
 *.xpi
+*.zip
 web-ext-artifacts
 
 # Logs
