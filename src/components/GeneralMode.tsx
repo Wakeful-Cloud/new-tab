@@ -29,13 +29,11 @@ import FormField from "~/components/FormField";
 import Multiselect, {MultiselectOption} from "~/components/Multiselect";
 import SubmitButton from "~/components/SubmitButton";
 import {generateBackground} from "~/lib/background";
-import {defaultSettings} from "~/lib/store";
-import {BackgroundCategory, BackgroundProvider, Settings} from "~/lib/types";
+import {resetStore, setStore, store} from "~/lib/store";
+import {BackgroundCategory, BackgroundProvider} from "~/lib/types";
 import {createDataURL} from "~/lib/utils";
 
 interface GeneralModeProps {
-  settings: Settings;
-  setSettings: (metadata: Settings) => void;
   onCreateShortcut: () => void;
 }
 
@@ -89,12 +87,12 @@ const GeneralMode: Component<GeneralModeProps> = props => {
   const [refreshAfter, setRefreshAfter] = createSignal(0);
 
   createEffect(() => {
-    if (props.settings.background.category !== undefined) {
-      setCategory(props.settings.background.category);
+    if (store.background.category !== undefined) {
+      setCategory(store.background.category);
     }
 
-    setProvider(props.settings.background.provider);
-    setRefreshAfter(props.settings.background.refreshAfter);
+    setProvider(store.background.provider);
+    setRefreshAfter(store.background.refreshAfter);
   });
 
   const backgroundProviderOptions = createMemo(() =>
@@ -132,11 +130,11 @@ const GeneralMode: Component<GeneralModeProps> = props => {
   const onSaveSettings = async (event: Event) => {
     event.preventDefault();
 
-    //Update settings
-    props.setSettings({
-      ...props.settings,
+    //Update store
+    setStore({
+      ...store,
       background: {
-        ...props.settings.background,
+        ...store.background,
         category: category(),
         provider: provider(),
         refreshAfter: refreshAfter()
@@ -148,15 +146,15 @@ const GeneralMode: Component<GeneralModeProps> = props => {
   };
 
   const onResetSettings = async () => {
-    //Update settings
-    props.setSettings(defaultSettings);
+    //Reset store
+    resetStore();
 
     //Regenerate background
     await generateBackground();
   };
 
   const serializedSettings = createMemo(() => {
-    const raw = JSON.stringify(props.settings, undefined, 2);
+    const raw = JSON.stringify(store, undefined, 2);
 
     const blob = new Blob([raw], {
       type: "application/json"
@@ -174,8 +172,8 @@ const GeneralMode: Component<GeneralModeProps> = props => {
     const raw = await files[0]!.text();
     const deserialized = JSON.parse(raw);
 
-    //Update settings
-    props.setSettings(deserialized);
+    //Update store
+    setStore(deserialized);
   };
 
   return (
@@ -201,7 +199,7 @@ const GeneralMode: Component<GeneralModeProps> = props => {
             multiple={false}
             onChange={setProvider}
             options={backgroundProviderOptions()}
-            value={props.settings.background.provider}
+            value={store.background.provider}
           />
         </FormField>
 
@@ -223,7 +221,7 @@ const GeneralMode: Component<GeneralModeProps> = props => {
             multiple={false}
             onChange={setCategory}
             options={backgroundCategoryOptions()}
-            value={props.settings.background.category}
+            value={store.background.category}
           />
         </FormField>
 
@@ -233,7 +231,7 @@ const GeneralMode: Component<GeneralModeProps> = props => {
             multiple={false}
             onChange={setRefreshAfter}
             options={refreshAfterOptions}
-            value={props.settings.background.refreshAfter}
+            value={store.background.refreshAfter}
           />
         </FormField>
 

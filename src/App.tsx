@@ -24,7 +24,7 @@ import GeneralMode from "~/components/GeneralMode";
 import Shortcut from "~/components/Shortcut";
 import ShortcutMode from "~/components/ShortcutMode";
 import {generateBackground} from "~/lib/background";
-import {initializeSettingsStore, setSettings, settings} from "~/lib/store";
+import {initializeStore, setStore, store} from "~/lib/store";
 import {BackgroundProvider, ShortcutMetadata} from "~/lib/types";
 
 /**
@@ -63,7 +63,7 @@ const App: Component = () => {
   const [shortcut, setShortcut] = createSignal<ShortcutMetadata>();
 
   const formattedProvider = createMemo(() =>
-    capitalize(settings.background.provider)
+    capitalize(store.background.provider)
   );
 
   const onOpenSettings = () => {
@@ -94,7 +94,7 @@ const App: Component = () => {
     const shortcuts: ShortcutMetadata[] = [];
 
     let overwroteMetadata = false;
-    for (const shortcut of settings.shortcuts) {
+    for (const shortcut of store.shortcuts) {
       if (shortcut.id === metadata.id) {
         overwroteMetadata = true;
         shortcuts.push(metadata);
@@ -107,8 +107,8 @@ const App: Component = () => {
       shortcuts.push(metadata);
     }
 
-    //Update settings
-    setSettings(previous => ({
+    //Update global store
+    setStore(previous => ({
       ...previous,
       shortcuts
     }));
@@ -120,12 +120,12 @@ const App: Component = () => {
   const onMetadataDelete = () => {
     //Generate shortcuts
     const currentShortcut = shortcut();
-    const shortcuts = settings.shortcuts.filter(
+    const shortcuts = store.shortcuts.filter(
       existing => existing.id !== currentShortcut?.id
     );
 
-    //Update settings
-    setSettings(previous => ({
+    //Update global store
+    setStore(previous => ({
       ...previous,
       shortcuts
     }));
@@ -135,18 +135,17 @@ const App: Component = () => {
   };
 
   onMount(async () => {
-    //Initialize the settings store
-    await initializeSettingsStore();
+    //Initialize the global store
+    await initializeStore();
 
     //Generate the background
     if (
       //No existing background
-      settings.background?.metadata === undefined ||
+      store.background?.metadata === undefined ||
       //Background has expired
-      (settings.background.refreshAfter > 0 &&
-        Date.now() -
-          new Date(settings.background.metadata.generatedAt).getTime() >
-          settings.background.refreshAfter)
+      (store.background.refreshAfter > 0 &&
+        Date.now() - new Date(store.background.metadata.generatedAt).getTime() >
+          store.background.refreshAfter)
     ) {
       await generateBackground();
     }
@@ -171,25 +170,23 @@ const App: Component = () => {
       </button>
 
       <div class="centered-row flex-wrap m-12">
-        <For each={settings.shortcuts}>
+        <For each={store.shortcuts}>
           {item => <Shortcut metadata={item} onEdit={() => onEdit(item)} />}
         </For>
       </div>
 
-      <Show when={settings.background.metadata?.photographerName !== undefined}>
+      <Show when={store.background.metadata?.photographerName !== undefined}>
         <Dynamic
-          component={
-            settings.background.metadata!.link !== undefined ? "a" : "p"
-          }
-          href={settings.background.metadata!.link}
+          component={store.background.metadata!.link !== undefined ? "a" : "p"}
+          href={store.background.metadata!.link}
           rel="noopener noreferrer"
           class="absolute acrylic bottom-2 centered-row px-1.5 py-1 left-2 rounded-md text-sm"
         >
           <Image />
           <span class="ml-1">
-            {settings.background.metadata!.photographerName}{" "}
+            {store.background.metadata!.photographerName}{" "}
             <Show
-              when={settings.background.provider !== BackgroundProvider.CUSTOM}
+              when={store.background.provider !== BackgroundProvider.CUSTOM}
             >
               {" "}
               via {formattedProvider()}
@@ -201,11 +198,7 @@ const App: Component = () => {
       <Drawer open={drawerOpen()} setOpen={setDrawerOpen}>
         <Switch>
           <Match when={drawerMode() === DrawerMode.GENERAL}>
-            <GeneralMode
-              settings={settings}
-              setSettings={setSettings}
-              onCreateShortcut={onCreateShortcut}
-            />
+            <GeneralMode onCreateShortcut={onCreateShortcut} />
           </Match>
 
           <Match when={drawerMode() === DrawerMode.SHORTCUT}>
@@ -218,7 +211,14 @@ const App: Component = () => {
         </Switch>
       </Drawer>
 
-      <Background background={settings.background.metadata} />
+      <Background
+        background={store.background.metadata}
+        backgroundCache={
+          store.background.metadata !== undefined
+            ? store.backgroundCache[store.background.metadata.id]
+            : undefined
+        }
+      />
     </>
   );
 };

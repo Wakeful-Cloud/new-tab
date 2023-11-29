@@ -7,8 +7,9 @@
 import {sample} from "lodash-es";
 import {createApi as createUnsplashApi} from "unsplash-js";
 import {PexelsClient} from "~/lib/pexels";
-import {setSettings, settings} from "~/lib/store";
+import {setStore, store} from "~/lib/store";
 import {
+  BackgroundCacheEntry,
   BackgroundCategory,
   BackgroundMetadata,
   BackgroundProvider
@@ -58,10 +59,10 @@ export const generateBackground = async (customBackgroundUrl?: string) => {
 
   //Generate background metadata
   let metadata: BackgroundMetadata | undefined = undefined;
-  switch (settings.background!.provider) {
+  switch (store.background!.provider) {
     case BackgroundProvider.CUSTOM: {
       //Get the url
-      const url = customBackgroundUrl ?? settings.background.metadata?.url;
+      const url = customBackgroundUrl ?? store.background.metadata?.url;
 
       if (url === undefined) {
         throw new TypeError("Custom background URL was undefined!");
@@ -80,9 +81,9 @@ export const generateBackground = async (customBackgroundUrl?: string) => {
       for (let i = 0; i < 100; i++) {
         //Get the query
         const query =
-          settings.background!.category === BackgroundCategory.NONE
+          store.background!.category === BackgroundCategory.NONE
             ? sample(BackgroundCategory)!
-            : settings.background!.category;
+            : store.background!.category;
 
         //Search for photos
         const searchRes = await pexelsApi.searchPhotos({
@@ -95,9 +96,7 @@ export const generateBackground = async (customBackgroundUrl?: string) => {
         //Get the first photo that hasn't been used recently
         const photo = searchRes.photos.find(
           photo =>
-            !settings.background!.previousIDs.includes(
-              generatePexelsID(photo.id)
-            )
+            !store.background!.previousIDs.includes(generatePexelsID(photo.id))
         );
 
         if (photo === undefined) {
@@ -133,8 +132,7 @@ export const generateBackground = async (customBackgroundUrl?: string) => {
           generatedAt: new Date().getTime(),
           photographerName: photo.photographer,
           alt:
-            photo.alt ??
-            `Pexels photo for ${settings.background!.category} query`,
+            photo.alt ?? `Pexels photo for ${store.background!.category} query`,
           link: photo.url,
           url: dataURL
         };
@@ -146,9 +144,9 @@ export const generateBackground = async (customBackgroundUrl?: string) => {
       for (let i = 0; i < 100; i++) {
         //Get the query
         const query =
-          settings.background!.category === BackgroundCategory.NONE
+          store.background!.category === BackgroundCategory.NONE
             ? sample(BackgroundCategory)!
-            : settings.background!.category;
+            : store.background!.category;
 
         //Search for photos
         const searchRes = await unsplashApi.search.getPhotos({
@@ -169,7 +167,7 @@ export const generateBackground = async (customBackgroundUrl?: string) => {
         //Get the first photo that hasn't been used recently
         const photo = searchRes.response.results.find(
           result =>
-            !settings.background!.previousIDs.includes(
+            !store.background!.previousIDs.includes(
               generateUnsplashID(result.id)
             )
         );
@@ -209,7 +207,7 @@ export const generateBackground = async (customBackgroundUrl?: string) => {
           photographerName: photo.user.name,
           alt:
             photo.alt_description ??
-            `Unsplash photo for ${settings.background!.category} query`,
+            `Unsplash photo for ${store.background!.category} query`,
           link: photo.links.html,
           url: dataURL
         };
@@ -219,7 +217,7 @@ export const generateBackground = async (customBackgroundUrl?: string) => {
 
     default:
       throw new TypeError(
-        `Invalid background provider ${settings.background!.provider}!`
+        `Invalid background provider ${store.background!.provider}!`
       );
   }
 
@@ -228,20 +226,44 @@ export const generateBackground = async (customBackgroundUrl?: string) => {
   }
 
   //Generate previous IDs
-  let previousIDs = Array.from(settings.background?.previousIDs ?? []);
+  let previousIDs = Array.from(store.background?.previousIDs ?? []);
   previousIDs.unshift(metadata!.id);
   if (previousIDs.length > MAX_PREVIOUS_IDS) {
     previousIDs.slice(0, MAX_PREVIOUS_IDS);
   }
   previousIDs = Array.from(new Set(previousIDs));
 
-  //Update settings
-  setSettings({
-    ...settings,
+  //Download the background
+  const backgroundRes = await fetch(metadata.url, {
+    cache: "force-cache",
+    credentials: "omit",
+    method: "GET",
+    referrerPolicy: "no-referrer"
+  });
+
+  //Handle errors
+  if (!backgroundRes.ok) {
+    console.error(backgroundRes);
+    throw new Error(backgroundRes.statusText);
+  }
+
+  //Create the cache entry
+  const blob = await backgroundRes.blob();
+  const cacheEntry = {
+    full: await createDataURL(blob)
+  } as BackgroundCacheEntry;
+
+  //Update the store
+  setStore({
+    ...store,
     background: {
-      ...settings.background!,
+      ...store.background!,
       previousIDs,
       metadata
+    },
+    backgroundCache: {
+      ...store.backgroundCache,
+      [metadata.id]: cacheEntry
     }
   });
 };
