@@ -32,12 +32,6 @@ jobs:
         run: npm install
         env:
           NODE_ENV: production
-        
-      - name: Setup Go
-        uses: actions/setup-go@v4
-
-      - name: Install CRX3
-        run: go install github.com/mediabuyerbot/go-crx3/crx3@v1.3.1
 
       - name: Build
         run: npm run build
@@ -45,15 +39,8 @@ jobs:
           VITE_PEXELS_API_KEY: ${{ secrets.VITE_PEXELS_API_KEY }}
           VITE_UNSPLASH_ACCESS_KEY: ${{ secrets.VITE_UNSPLASH_ACCESS_KEY }}
 
-      - name: Write the CRX signing key
-        run: echo "${{ secrets.CRX_SIGNING_KEY }}" > new-tab.crx.pem
-
       - name: Pack extension for Chrome
         run: npm run pack:chrome
-        
-      - name: Destroy the CRX signing key
-        if: always()
-        run: rm -f new-tab.pem
 
       - name: Pack extension for Firefox
         run: npm run pack:firefox
@@ -61,12 +48,12 @@ jobs:
           WEB_EXT_API_KEY: ${{ secrets.WEB_EXT_API_KEY }}
           WEB_EXT_API_SECRET: ${{ secrets.WEB_EXT_API_SECRET }}
 
-      - name: Upload the CRX
+      - name: Upload the packed Chrome extension
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: new-tab.crx
-          asset_name: new-tab.crx.disabled
+          file: new-tab.zip
+          asset_name: new-tab.zip
           tag: ${{ github.ref }}
 
       - name: Upload the XPI

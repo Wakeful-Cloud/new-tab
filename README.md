@@ -16,11 +16,12 @@ A simple browser extension that displays a random image along with bookmarks on 
 
 #### Chromium-based Browsers
 
-1. [Download the `new-tab.crx.disabled` file from the latest release](https://github.com/wakeful-cloud/new-tab/releases/latest/download/new-tab.crx.disabled)
-2. Rename `new-tab.crx.disabled` to `new-tab.crx`
+1. [Download the `new-tab.zip` file from the latest release](https://github.com/wakeful-cloud/new-tab/releases/latest/download/new-tab.zip)
+2. Extract `new-tab.zip`
 3. Go to `chrome://extensions` (regardless of which browser you're using)
-4. Drag the downloaded `new-tab.crx` file onto the page (it's a little finicky and can take a few attempts to work)
-5. Click `Add extension`
+4. Enable developer mode
+5. Click `Load unpacked`
+6. Select the extracted `new-tab` folder
 
 #### Firefox
 
