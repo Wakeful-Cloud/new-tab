@@ -17,9 +17,9 @@ import {
 import {createDataURL} from "~/lib/utils";
 
 /**
- * Maximum number of previous IDs to store
+ * Maximum number of previous backgrounds to track and cache
  */
-const MAX_PREVIOUS_IDS = 250;
+const MAX_PREVIOUS_BACKGROUNDS = 250;
 
 if (
   typeof import.meta.env.VITE_PEXELS_API_KEY === "undefined" ||
@@ -110,23 +110,6 @@ export const generateBackground = async (customBackgroundUrl?: string) => {
         photoURL.searchParams.set("auto", "compress");
         photoURL.searchParams.set("cs", "tinysrgb");
 
-        //Download the photo
-        const photoRes = await fetch(photoURL, {
-          credentials: "omit",
-          method: "GET",
-          referrerPolicy: "no-referrer"
-        });
-
-        //Handle errors
-        if (!photoRes.ok) {
-          console.error(photoRes);
-          throw new Error(photoRes.statusText);
-        }
-
-        //Convert to a data URL
-        const blob = await photoRes.blob();
-        const dataURL = await createDataURL(blob);
-
         metadata = {
           id: generatePexelsID(photo.id),
           generatedAt: new Date().getTime(),
@@ -134,7 +117,7 @@ export const generateBackground = async (customBackgroundUrl?: string) => {
           alt:
             photo.alt ?? `Pexels photo for ${store.background!.category} query`,
           link: photo.url,
-          url: dataURL
+          url: photoURL.toString()
         };
         break;
       }
@@ -184,23 +167,6 @@ export const generateBackground = async (customBackgroundUrl?: string) => {
         photoURL.searchParams.set("fm", "jpg");
         photoURL.searchParams.set("q", "90");
 
-        //Download the photo
-        const photoRes = await fetch(photoURL, {
-          credentials: "omit",
-          method: "GET",
-          referrerPolicy: "no-referrer"
-        });
-
-        //Handle errors
-        if (!photoRes.ok) {
-          console.error(photoRes);
-          throw new Error(photoRes.statusText);
-        }
-
-        //Convert to a data URL
-        const blob = await photoRes.blob();
-        const dataURL = await createDataURL(blob);
-
         metadata = {
           id: generateUnsplashID(photo.id),
           generatedAt: new Date().getTime(),
@@ -209,7 +175,7 @@ export const generateBackground = async (customBackgroundUrl?: string) => {
             photo.alt_description ??
             `Unsplash photo for ${store.background!.category} query`,
           link: photo.links.html,
-          url: dataURL
+          url: photoURL.toString()
         };
         break;
       }
@@ -228,14 +194,13 @@ export const generateBackground = async (customBackgroundUrl?: string) => {
   //Generate previous IDs
   let previousIDs = Array.from(store.background?.previousIDs ?? []);
   previousIDs.unshift(metadata!.id);
-  if (previousIDs.length > MAX_PREVIOUS_IDS) {
-    previousIDs.slice(0, MAX_PREVIOUS_IDS);
+  if (previousIDs.length > MAX_PREVIOUS_BACKGROUNDS) {
+    previousIDs.slice(0, MAX_PREVIOUS_BACKGROUNDS);
   }
   previousIDs = Array.from(new Set(previousIDs));
 
   //Download the background
   const backgroundRes = await fetch(metadata.url, {
-    cache: "force-cache",
     credentials: "omit",
     method: "GET",
     referrerPolicy: "no-referrer"
@@ -247,11 +212,19 @@ export const generateBackground = async (customBackgroundUrl?: string) => {
     throw new Error(backgroundRes.statusText);
   }
 
-  //Create the cache entry
+  //Generate the cache entry
   const blob = await backgroundRes.blob();
   const cacheEntry = {
     full: await createDataURL(blob)
   } as BackgroundCacheEntry;
+
+  //Regenerate the cache
+  const backgroundCache = Object.fromEntries(
+    Object.entries(store.backgroundCache).filter(
+      ([id]) => !previousIDs.includes(id)
+    )
+  );
+  backgroundCache[metadata.id] = cacheEntry;
 
   //Update the store
   setStore({
@@ -261,9 +234,6 @@ export const generateBackground = async (customBackgroundUrl?: string) => {
       previousIDs,
       metadata
     },
-    backgroundCache: {
-      ...store.backgroundCache,
-      [metadata.id]: cacheEntry
-    }
+    backgroundCache
   });
 };

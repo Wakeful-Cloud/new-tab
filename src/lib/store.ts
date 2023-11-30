@@ -58,7 +58,7 @@ export const initializeStore = async () => {
   const initialLocal = await get<LocalStore>(LOCAL_STORAGE_KEY, false);
   const initialSync = await get<SyncedStore>(SYNCED_STORAGE_KEY, true);
 
-  if (initialLocal !== undefined && initialLocal) {
+  if (initialLocal !== undefined && initialSync !== undefined) {
     setStore(merge({}, initialLocal, initialSync));
   }
 
