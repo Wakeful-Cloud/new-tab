@@ -9,9 +9,8 @@ import {createApi as createUnsplashApi} from "unsplash-js";
 import {PexelsClient} from "~/lib/pexels";
 import {setStore, store} from "~/lib/store";
 import {
-  BackgroundCacheEntry,
   BackgroundCategory,
-  BackgroundMetadata,
+  BackgroundData,
   BackgroundProvider
 } from "~/lib/types";
 import {createDataURL} from "~/lib/utils";
@@ -57,18 +56,18 @@ export const generateBackground = async (customBackgroundUrl?: string) => {
   const width = window.screen.width;
   const height = window.screen.height;
 
-  //Generate background metadata
-  let metadata: BackgroundMetadata | undefined = undefined;
+  //Generate background
+  let background: BackgroundData | undefined = undefined;
   switch (store.background!.provider) {
     case BackgroundProvider.CUSTOM: {
       //Get the url
-      const url = customBackgroundUrl ?? store.background.metadata?.url;
+      const url = customBackgroundUrl ?? store.background.background?.url;
 
       if (url === undefined) {
         throw new TypeError("Custom background URL was undefined!");
       }
 
-      metadata = {
+      background = {
         id: "custom",
         generatedAt: new Date().getTime(),
         alt: "Custom background",
@@ -110,7 +109,7 @@ export const generateBackground = async (customBackgroundUrl?: string) => {
         photoURL.searchParams.set("auto", "compress");
         photoURL.searchParams.set("cs", "tinysrgb");
 
-        metadata = {
+        background = {
           id: generatePexelsID(photo.id),
           generatedAt: new Date().getTime(),
           photographerName: photo.photographer,
@@ -167,7 +166,7 @@ export const generateBackground = async (customBackgroundUrl?: string) => {
         photoURL.searchParams.set("fm", "jpg");
         photoURL.searchParams.set("q", "90");
 
-        metadata = {
+        background = {
           id: generateUnsplashID(photo.id),
           generatedAt: new Date().getTime(),
           photographerName: photo.user.name,
@@ -187,20 +186,20 @@ export const generateBackground = async (customBackgroundUrl?: string) => {
       );
   }
 
-  if (metadata === undefined) {
+  if (background === undefined) {
     throw new Error("Failed to find a photo!");
   }
 
   //Generate previous IDs
   let previousIDs = Array.from(store.background?.previousIDs ?? []);
-  previousIDs.unshift(metadata!.id);
+  previousIDs.unshift(background!.id);
   if (previousIDs.length > MAX_PREVIOUS_BACKGROUNDS) {
     previousIDs.slice(0, MAX_PREVIOUS_BACKGROUNDS);
   }
   previousIDs = Array.from(new Set(previousIDs));
 
   //Download the background
-  const backgroundRes = await fetch(metadata.url, {
+  const backgroundRes = await fetch(background.url, {
     credentials: "omit",
     method: "GET",
     referrerPolicy: "no-referrer"
@@ -212,19 +211,9 @@ export const generateBackground = async (customBackgroundUrl?: string) => {
     throw new Error(backgroundRes.statusText);
   }
 
-  //Generate the cache entry
+  //Update the background
   const blob = await backgroundRes.blob();
-  const cacheEntry = {
-    full: await createDataURL(blob)
-  } as BackgroundCacheEntry;
-
-  //Regenerate the cache
-  const backgroundCache = Object.fromEntries(
-    Object.entries(store.backgroundCache).filter(
-      ([id]) => !previousIDs.includes(id)
-    )
-  );
-  backgroundCache[metadata.id] = cacheEntry;
+  background.url = await createDataURL(blob);
 
   //Update the store
   setStore({
@@ -232,8 +221,7 @@ export const generateBackground = async (customBackgroundUrl?: string) => {
     background: {
       ...store.background!,
       previousIDs,
-      metadata
-    },
-    backgroundCache
+      background: background
+    }
   });
 };

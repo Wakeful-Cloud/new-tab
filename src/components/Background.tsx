@@ -4,11 +4,10 @@
 
 //Imports
 import {Show, type Component} from "solid-js";
-import {BackgroundCacheEntry, BackgroundMetadata} from "~/lib/types";
+import {BackgroundData} from "~/lib/types";
 
 interface BackgroundProps {
-  background?: BackgroundMetadata;
-  backgroundCache?: BackgroundCacheEntry;
+  background?: BackgroundData;
 }
 
 const Background: Component<BackgroundProps> = props => {
@@ -22,7 +21,7 @@ const Background: Component<BackgroundProps> = props => {
           class="absolute h-full object-cover w-full -z-1"
           crossorigin="anonymous"
           referrerpolicy="no-referrer"
-          src={props.backgroundCache?.full}
+          src={props.background!.url}
         />
       </Show>
     </div>

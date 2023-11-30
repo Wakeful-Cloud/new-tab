@@ -44,19 +44,9 @@ export interface ShortcutMetadata {
 }
 
 /**
- * Background cache entry
+ * Background data
  */
-export interface BackgroundCacheEntry {
-  /**
-   * Full-resolution base64-encoded image
-   */
-  full: string;
-}
-
-/**
- * Background metadata
- */
-export interface BackgroundMetadata {
+export interface BackgroundData {
   /**
    * Unique identifier
    */
@@ -83,7 +73,7 @@ export interface BackgroundMetadata {
   alt: string;
 
   /**
-   * Photo source URL
+   * Base64-encoded image data
    */
   url: string;
 }
@@ -173,9 +163,9 @@ export interface BackgroundSettings {
   refreshAfter: number;
 
   /**
-   * Current background metadata
+   * Current background
    */
-  metadata?: BackgroundMetadata;
+  background?: BackgroundData;
 }
 
 /**
@@ -184,46 +174,16 @@ export interface BackgroundSettings {
 export interface Store {
   /**
    * Store version
-   *
-   * @note Synced across devices
    */
   version: string;
 
   /**
    * Background settings
-   *
-   * @note Synced across devices
    */
   background: BackgroundSettings;
 
   /**
-   * Background cache
-   * * Keys: background IDs
-   * * Values: background cache entries
-   *
-   * @note Not synced across devices
-   */
-  backgroundCache: Record<string, BackgroundCacheEntry>;
-
-  /**
    * Shortcuts
-   *
-   * @note Synced across devices
    */
   shortcuts: ShortcutMetadata[];
 }
-
-/**
- * Local storage properties
- */
-type LocalStoreProperties = "backgroundCache";
-
-/**
- * Local storage store
- */
-export type LocalStore = Pick<Store, LocalStoreProperties>;
-
-/**
- * Synced global store
- */
-export type SyncedStore = Omit<Store, LocalStoreProperties>;

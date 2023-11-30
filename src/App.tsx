@@ -18,7 +18,6 @@ import {
   type Component
 } from "solid-js";
 import {Dynamic} from "solid-js/web";
-import Background from "~/components/Background";
 import Drawer from "~/components/Drawer";
 import GeneralMode from "~/components/GeneralMode";
 import Shortcut from "~/components/Shortcut";
@@ -26,6 +25,7 @@ import ShortcutMode from "~/components/ShortcutMode";
 import {generateBackground} from "~/lib/background";
 import {initializeStore, setStore, store} from "~/lib/store";
 import {BackgroundProvider, ShortcutMetadata} from "~/lib/types";
+import Background from "~/components/Background";
 
 /**
  * Drawer view modes
@@ -141,10 +141,11 @@ const App: Component = () => {
     //Generate the background
     if (
       //No existing background
-      store.background?.metadata === undefined ||
+      store.background?.background === undefined ||
       //Background has expired
       (store.background.refreshAfter > 0 &&
-        Date.now() - new Date(store.background.metadata.generatedAt).getTime() >
+        Date.now() -
+          new Date(store.background.background.generatedAt).getTime() >
           store.background.refreshAfter)
     ) {
       await generateBackground();
@@ -175,16 +176,18 @@ const App: Component = () => {
         </For>
       </div>
 
-      <Show when={store.background.metadata?.photographerName !== undefined}>
+      <Show when={store.background.background?.photographerName !== undefined}>
         <Dynamic
-          component={store.background.metadata!.link !== undefined ? "a" : "p"}
-          href={store.background.metadata!.link}
+          component={
+            store.background.background!.link !== undefined ? "a" : "p"
+          }
+          href={store.background.background!.link}
           rel="noopener noreferrer"
           class="absolute acrylic bottom-2 centered-row px-1.5 py-1 left-2 rounded-md text-sm"
         >
           <Image />
           <span class="ml-1">
-            {store.background.metadata!.photographerName}{" "}
+            {store.background.background!.photographerName}{" "}
             <Show
               when={store.background.provider !== BackgroundProvider.CUSTOM}
             >
@@ -211,14 +214,7 @@ const App: Component = () => {
         </Switch>
       </Drawer>
 
-      <Background
-        background={store.background.metadata}
-        backgroundCache={
-          store.background.metadata !== undefined
-            ? store.backgroundCache[store.background.metadata.id]
-            : undefined
-        }
-      />
+      <Background background={store.background.background} />
     </>
   );
 };

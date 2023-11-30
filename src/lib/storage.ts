@@ -17,20 +17,14 @@ const webextensionPolyfill = import("webextension-polyfill");
 
 /**
  * Get an item from storage
- * @param key Item key
- * @param synced Whether to use synced or local storage
+ * @param key Item keye
  * @returns Item value
  */
-export const get = async <T>(
-  key: string,
-  synced: boolean
-): Promise<T | undefined> => {
+export const get = async <T>(key: string): Promise<T | undefined> => {
   const {storage} = (await webextensionPolyfill).default;
   let raw: string | undefined = undefined;
 
-  if (synced && storage !== undefined && storage.sync !== undefined) {
-    raw = (await storage.sync.get(key))?.[key];
-  } else if (!synced && storage !== undefined && storage.local !== undefined) {
+  if (storage !== undefined && storage.local !== undefined) {
     raw = (await storage.local.get(key))?.[key];
   } else {
     raw = await idbGet<string>(key);
@@ -43,17 +37,12 @@ export const get = async <T>(
  * Set an item in storage
  * @param key Item key
  * @param value Item value
- * @param sysnced Whether to use synced or local storage
  */
-export const set = async <T>(key: string, value: T, synced: boolean) => {
+export const set = async <T>(key: string, value: T) => {
   const {storage} = (await webextensionPolyfill).default;
   const raw = JSON.stringify(value);
 
-  if (synced && storage !== undefined && storage.sync !== undefined) {
-    await storage.sync.set({
-      [key]: raw
-    });
-  } else if (!synced && storage !== undefined && storage.local !== undefined) {
+  if (storage !== undefined && storage.local !== undefined) {
     await storage.local.set({
       [key]: raw
     });

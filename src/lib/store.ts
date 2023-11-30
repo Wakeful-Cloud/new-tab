@@ -3,27 +3,15 @@
  */
 
 //Imports
-import {cloneDeep, merge} from "lodash-es";
-import {createEffect, createRoot} from "solid-js";
-import {createStore} from "solid-js/store";
+import {cloneDeep} from "lodash-es";
+import {StoreSetter, createStore, unwrap} from "solid-js/store";
 import {get, set} from "~/lib/storage";
-import {
-  BackgroundCategory,
-  BackgroundProvider,
-  LocalStore,
-  Store,
-  SyncedStore
-} from "~/lib/types";
+import {BackgroundCategory, BackgroundProvider, Store} from "~/lib/types";
 
 /**
- * Local storage key
+ * Store storage key
  */
-const LOCAL_STORAGE_KEY = "io.github.wakeful-clouds.new-tab.local";
-
-/**
- * Synced storage key
- */
-const SYNCED_STORAGE_KEY = "io.github.wakeful-clouds.new-tab.synced";
+const STORE_STORAGE_KEY = "io.github.wakeful-clouds.new-tab.store";
 
 /**
  * Default global store value
@@ -36,54 +24,40 @@ const defaultStore = {
     previousIDs: [],
     refreshAfter: 1000 * 60 * 60 //1 hour
   },
-  backgroundCache: {},
   shortcuts: []
 } as Store;
 
 /**
  * Global store
  */
-export const [store, setStore] = createStore<Store>(cloneDeep(defaultStore));
-
-/**
- * Reset the global store
- */
-export const resetStore = () => setStore(cloneDeep(defaultStore));
+const [store, baseSetStore] = createStore<Store>(cloneDeep(defaultStore));
+export {store};
 
 /**
  * Initialize the global store
  */
 export const initializeStore = async () => {
-  //Get initial values from storage
-  const initialLocal = await get<LocalStore>(LOCAL_STORAGE_KEY, false);
-  const initialSync = await get<SyncedStore>(SYNCED_STORAGE_KEY, true);
+  //Get initial value from storage
+  const initial = await get<Store>(STORE_STORAGE_KEY);
 
-  if (initialLocal !== undefined && initialSync !== undefined) {
-    setStore(merge({}, initialLocal, initialSync));
+  if (initial !== undefined) {
+    baseSetStore(initial);
   }
-
-  //Save changes to storage
-  createRoot(() => {
-    createEffect(() => {
-      (async () => {
-        await set<LocalStore>(
-          LOCAL_STORAGE_KEY,
-          {
-            backgroundCache: store.backgroundCache
-          },
-          false
-        );
-
-        await set<SyncedStore>(
-          SYNCED_STORAGE_KEY,
-          {
-            version: store.version,
-            background: store.background,
-            shortcuts: store.shortcuts
-          },
-          true
-        );
-      })();
-    });
-  });
 };
+
+/**
+ * Set the global store
+ * @param setter Store setter
+ */
+export const setStore = (setter: StoreSetter<Store, []>) => {
+  //Update the store
+  baseSetStore(setter);
+
+  //Save
+  set<Store>(STORE_STORAGE_KEY, unwrap(store));
+};
+
+/**
+ * Reset the global store
+ */
+export const resetStore = () => setStore(cloneDeep(defaultStore));
