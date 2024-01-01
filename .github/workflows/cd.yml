@@ -34,7 +34,7 @@ jobs:
           NODE_ENV: production
 
       - name: Setup Go
-        uses: actions/setup-go@v4
+        uses: actions/setup-go@v5
 
       - name: Install CRX3
         run: go install github.com/mediabuyerbot/go-crx3/crx3@v1.3.1
