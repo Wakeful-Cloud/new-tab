@@ -18,6 +18,7 @@ import {
   type Component
 } from "solid-js";
 import {Dynamic} from "solid-js/web";
+import Background from "~/components/Background";
 import Drawer from "~/components/Drawer";
 import GeneralMode from "~/components/GeneralMode";
 import Shortcut from "~/components/Shortcut";
@@ -25,7 +26,6 @@ import ShortcutMode from "~/components/ShortcutMode";
 import {generateBackground} from "~/lib/background";
 import {initializeStore, setStore, store} from "~/lib/store";
 import {BackgroundProvider, ShortcutMetadata} from "~/lib/types";
-import Background from "~/components/Background";
 
 /**
  * Drawer view modes

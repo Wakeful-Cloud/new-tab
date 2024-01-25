@@ -24,9 +24,13 @@ const Drawer: Component<DrawerProps> = props => {
 
       <div
         class="absolute acrylic bottom-0 duration-350 hcentered-col p-4 pointer-events-auto right-0 rounded-l-xl top-0 transition-all w-84"
-        classList={{
-          "-right-84!": !props.open
-        }}
+        style={
+          props.open
+            ? {}
+            : {
+                right: "-84rem"
+              }
+        }
       >
         <div class="centered-row w-full">
           <button
