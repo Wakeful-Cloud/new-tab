@@ -45,6 +45,9 @@ export default defineConfig({
         chrome_url_overrides: {
           newtab: "index.html"
         },
+        chrome_settings_overrides: {
+          homepage: "index.html"
+        },
         browser_specific_settings: {
           gecko: {
             id: "extension@io.github.wakeful-clouds.new-tab"
