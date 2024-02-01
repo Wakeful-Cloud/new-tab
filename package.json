@@ -19,7 +19,7 @@
     "@types/node": "^20.11.6",
     "@types/webextension-polyfill": "^0.10.7",
     "@unocss/preset-wind": "^0.58.3",
-    "@unocss/transformer-directives": "^0.58.3",
+    "@unocss/transformer-directives": "^0.58.4",
     "idb-keyval": "^6.2.1",
     "lodash-es": "^4.17.21",
     "phosphor-solid": "^1.1.5",
