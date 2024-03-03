@@ -35,7 +35,7 @@
     "webextension-polyfill": "^0.10.0"
   },
   "devDependencies": {
-    "@limegrass/eslint-plugin-import-alias": "^1.1.0",
+    "@limegrass/eslint-plugin-import-alias": "^1.2.0",
     "@typescript-eslint/eslint-plugin": "^7.0.0",
     "@typescript-eslint/parser": "^6.21.0",
     "eslint": "^8.56.0",
