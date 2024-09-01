@@ -30,7 +30,7 @@
     "unsplash-js": "^7.0.19",
     "vite": "^5.3.5",
     "vite-plugin-solid": "^2.10.2",
-    "vite-tsconfig-paths": "^4.3.2",
+    "vite-tsconfig-paths": "^5.0.1",
     "web-ext": "^8.2.0",
     "webextension-polyfill": "^0.12.0"
   },
