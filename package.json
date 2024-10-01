@@ -16,7 +16,7 @@
   },
   "dependencies": {
     "@types/lodash-es": "^4.17.12",
-    "@types/node": "^22.1.0",
+    "@types/node": "^22.7.4",
     "@types/webextension-polyfill": "^0.12.1",
     "@unocss/preset-wind": "^0.59.4",
     "@unocss/transformer-directives": "^0.61.9",
