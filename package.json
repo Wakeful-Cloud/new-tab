@@ -42,7 +42,7 @@
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.2.1",
     "eslint-plugin-security-node": "^1.1.4",
-    "eslint-plugin-solid": "^0.14.3"
+    "eslint-plugin-solid": "^0.14.4"
   },
   "repository": {
     "type": "git",
