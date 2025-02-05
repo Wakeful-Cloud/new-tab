@@ -18,7 +18,7 @@
     "@types/lodash-es": "^4.17.12",
     "@types/node": "^22.10.3",
     "@types/webextension-polyfill": "^0.12.1",
-    "@unocss/preset-wind": "^0.59.4",
+    "@unocss/preset-wind": "^65.4.3",
     "@unocss/transformer-directives": "^65.4.3",
     "idb-keyval": "^6.2.1",
     "lodash-es": "^4.17.21",
