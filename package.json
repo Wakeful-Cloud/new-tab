@@ -29,7 +29,7 @@
     "unocss": "^65.4.3",
     "unsplash-js": "^7.0.19",
     "vite": "^6.2.0",
-    "vite-plugin-solid": "^2.11.0",
+    "vite-plugin-solid": "^2.11.6",
     "vite-tsconfig-paths": "^5.0.1",
     "web-ext": "^8.3.0",
     "webextension-polyfill": "^0.12.0"
