@@ -14,8 +14,7 @@
     "baseUrl": ".",
     "types": [
       "chrome",
-      "vite/client",
-      "src/env.d.ts"
+      "vite/client"
     ],
     /* JavaScript Support */
     "allowJs": true,

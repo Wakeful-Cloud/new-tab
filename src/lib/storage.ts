@@ -1,23 +1,24 @@
 /**
- * @fileoverview Storage abstraction
+ * @file Storage abstraction
  */
 
-//Imports
+// Imports
 import {get as idbGet, set as idbSet} from "idb-keyval";
 import {has as objHas, set as objSet} from "lodash-es";
 
-//Set dummy runtime id
-const key = "chrome.runtime.id";
-if (!objHas(globalThis, key)) {
-  objSet(globalThis, key, "dummy-id");
+// Set dummy runtime id
+const dummyKey = "chrome.runtime.id";
+
+if (!objHas(globalThis, dummyKey)) {
+  objSet(globalThis, dummyKey, "dummy-id");
 }
 
-//Late imports
+// Late imports
 const webextensionPolyfill = import("webextension-polyfill");
 
 /**
  * Get an item from storage
- * @param key Item keye
+ * @param key Item key
  * @returns Item value
  */
 export const get = async <T>(key: string): Promise<T | undefined> => {
@@ -25,7 +26,7 @@ export const get = async <T>(key: string): Promise<T | undefined> => {
   let raw: string | undefined = undefined;
 
   if (storage !== undefined && storage.local !== undefined) {
-    raw = (await storage.local.get(key))?.[key];
+    raw = (await storage.local.get(key))?.[key] as string | undefined;
   } else {
     raw = await idbGet<string>(key);
   }
@@ -44,7 +45,7 @@ export const set = async <T>(key: string, value: T) => {
 
   if (storage !== undefined && storage.local !== undefined) {
     await storage.local.set({
-      [key]: raw
+      [key]: raw,
     });
   } else {
     await idbSet(key, raw);

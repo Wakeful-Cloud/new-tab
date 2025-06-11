@@ -1,23 +1,24 @@
 /**
- * @fileoverview App shell
+ * @file App shell
  */
 
-//Imports
+// Imports
 import {capitalize} from "lodash-es";
 import {ArrowClockwise, Gear, Image} from "phosphor-solid";
 import {
-  For,
-  Match,
-  Show,
-  Switch,
+  type Component,
   createEffect,
   createMemo,
   createSignal,
+  For,
+  Match,
   onCleanup,
   onMount,
-  type Component
+  Show,
+  Switch,
 } from "solid-js";
 import {Dynamic} from "solid-js/web";
+
 import Background from "~/components/Background";
 import Drawer from "~/components/Drawer";
 import GeneralMode from "~/components/GeneralMode";
@@ -39,7 +40,7 @@ enum DrawerMode {
   /**
    * Upsert a shortcut
    */
-  SHORTCUT = "shortcut"
+  SHORTCUT = "shortcut",
 }
 
 /**
@@ -48,7 +49,7 @@ enum DrawerMode {
 const darkQuery = window.matchMedia("(prefers-color-scheme: dark)");
 
 const App: Component = () => {
-  //Reactively update dark mode
+  // Reactively update dark mode
   const [dark, setDark] = createSignal(darkQuery.matches);
   const darkListener = (event: MediaQueryListEvent) => setDark(event.matches);
 
@@ -63,7 +64,7 @@ const App: Component = () => {
   const [shortcut, setShortcut] = createSignal<ShortcutMetadata>();
 
   const formattedProvider = createMemo(() =>
-    capitalize(store.background.provider)
+    capitalize(store.background.provider),
   );
 
   const onOpenSettings = () => {
@@ -76,7 +77,7 @@ const App: Component = () => {
   };
 
   const onEdit = (metadata: ShortcutMetadata) => {
-    //Force-refresh the shortcut metadata to prevent the ShorcutMode from displaying stale data
+    // Force-refresh the shortcut metadata to prevent the ShorcutMode from displaying stale data
     setShortcut(undefined);
     setShortcut(metadata);
 
@@ -90,16 +91,17 @@ const App: Component = () => {
   };
 
   const onMetadataSave = (metadata: ShortcutMetadata) => {
-    //Generate shortcuts
+    // Generate shortcuts
     const shortcuts: ShortcutMetadata[] = [];
 
     let overwroteMetadata = false;
-    for (const shortcut of store.shortcuts) {
-      if (shortcut.id === metadata.id) {
+
+    for (const storeShortcut of store.shortcuts) {
+      if (storeShortcut.id === metadata.id) {
         overwroteMetadata = true;
         shortcuts.push(metadata);
       } else {
-        shortcuts.push(shortcut);
+        shortcuts.push(storeShortcut);
       }
     }
 
@@ -107,42 +109,43 @@ const App: Component = () => {
       shortcuts.push(metadata);
     }
 
-    //Update global store
+    // Update global store
     setStore(previous => ({
       ...previous,
-      shortcuts
+      shortcuts,
     }));
 
-    //Close
+    // Close
     setDrawerOpen(false);
   };
 
   const onMetadataDelete = () => {
-    //Generate shortcuts
+    // Generate shortcuts
     const currentShortcut = shortcut();
+
     const shortcuts = store.shortcuts.filter(
-      existing => existing.id !== currentShortcut?.id
+      existing => existing.id !== currentShortcut?.id,
     );
 
-    //Update global store
+    // Update global store
     setStore(previous => ({
       ...previous,
-      shortcuts
+      shortcuts,
     }));
 
-    //Close
+    // Close
     setDrawerOpen(false);
   };
 
   onMount(async () => {
-    //Initialize the global store
+    // Initialize the global store
     await initializeStore();
 
-    //Generate the background
+    // Generate the background
     if (
-      //No existing background
+      // No existing background
       store.background?.background === undefined ||
-      //Background has expired
+      // Background has expired
       (store.background.refreshAfter > 0 &&
         Date.now() -
           new Date(store.background.background.generatedAt).getTime() >
@@ -179,7 +182,7 @@ const App: Component = () => {
       <Show when={store.background.background?.photographerName !== undefined}>
         <Dynamic
           component={
-            store.background.background!.link !== undefined ? "a" : "p"
+            store.background.background!.link === undefined ? "p" : "a"
           }
           href={store.background.background!.link}
           rel="noopener noreferrer"

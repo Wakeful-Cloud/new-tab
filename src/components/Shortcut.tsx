@@ -1,9 +1,10 @@
 /**
- * @fileoverview Shortcut component
+ * @file Shortcut component
  */
 
-//Imports
-import {Show, type Component} from "solid-js";
+// Imports
+import {type Component, Show} from "solid-js";
+
 import {ShortcutLinkHint, ShortcutMetadata} from "~/lib/types";
 
 interface ShortcutProps {

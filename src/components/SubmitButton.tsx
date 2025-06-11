@@ -1,9 +1,10 @@
 /**
- * @fileoverview Submit button component
+ * @file Submit button component
  */
 
-//Imports
-import {JSXElement, Show, useContext, type Component} from "solid-js";
+// Imports
+import {type Component, JSXElement, Show, useContext} from "solid-js";
+
 import {FormFieldIdContext} from "~/components/FormField";
 
 interface SubmitButtonProps {
@@ -22,7 +23,7 @@ const SubmitButton: Component<SubmitButtonProps> = props => {
       <span
         classList={{
           "ml-2": props.leading !== undefined,
-          "mr-2": props.trailing !== undefined
+          "mr-2": props.trailing !== undefined,
         }}
       >
         {props.label}

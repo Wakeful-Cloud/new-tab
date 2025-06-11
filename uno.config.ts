@@ -1,18 +1,21 @@
 /**
- * @fileoverview UnoCSS config
+ * @file UnoCSS config
  */
 
-//Imports
-import presetWind from "@unocss/preset-wind";
+// Imports
+import presetWind4 from "@unocss/preset-wind4";
 import transformDirectives from "@unocss/transformer-directives";
 import {defineConfig} from "unocss";
 
-//Export
+// Export
 export default defineConfig({
   presets: [
-    presetWind({
-      dark: "class"
-    })
+    presetWind4({
+      dark: "class",
+      preflights: {
+        reset: true,
+      },
+    }),
   ],
-  transformers: [transformDirectives()]
+  transformers: [transformDirectives()],
 });

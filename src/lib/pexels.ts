@@ -1,5 +1,5 @@
 /**
- * @fileoverview Pexels API client
+ * @file Pexels API client
  */
 
 /**
@@ -115,9 +115,9 @@ export interface SearchParameters {
 
   /**
    * Minimum photo size. The current supported sizes are:
-   * * `large`: `24MP`
-   * * `medium`: `12MP`
-   * * `small`: `4MP`
+   * `large`: `24MP`
+   * `medium`: `12MP`
+   * `small`: `4MP`
    */
   size?: "large" | "medium" | "small";
 
@@ -225,16 +225,20 @@ export interface SearchResponse {
  * Pexels API client
  */
 export class PexelsClient {
+  /**
+   * Create a new Pexels API client
+   * @param apiKey Pexels API key
+   */
   constructor(
     /**
      * Pexels API key
      */
-    private apiKey: string
+    private apiKey: string,
   ) {}
 
   /**
    * Fetch from the Pexels API
-   * @param T Expected response type
+   * @template T Expected response type
    * @param path API relative path
    * @param parameters Query parameters
    * @param init Fetch init
@@ -243,36 +247,36 @@ export class PexelsClient {
   private async fetchPexels<T>(
     path: string,
     parameters: Record<string, any>,
-    init?: RequestInit
+    init?: RequestInit,
   ): Promise<T> {
-    //Generate the URL
+    // Generate the URL
     const reqUrl = new URL(path, "https://api.pexels.com");
 
-    //Add query parameters
+    // Add query parameters
     for (const [key, value] of Object.entries(parameters)) {
       reqUrl.searchParams.set(key, value.toString());
     }
 
-    //Make the request
+    // Make the request
     const res = await fetch(reqUrl, {
       ...init,
       headers: {
         ...init?.headers,
-        Authorization: this.apiKey
-      }
+        Authorization: this.apiKey,
+      },
     });
 
-    //Handle errors
+    // Handle errors
     if (res.status < 200 || res.status >= 300) {
-      //Get the body
+      // Get the body
       const body = await res.text();
 
       throw new Error(
-        `Pexels API returned status code: ${res.status} and body: ${body}`
+        `Pexels API returned status code: ${res.status} and body: ${body}`,
       );
     }
 
-    //Parse the response
+    // Parse the response
     const json = await res.json();
 
     return json;
@@ -284,11 +288,11 @@ export class PexelsClient {
    * @returns Search response
    */
   public async searchPhotos(
-    parameters: SearchParameters
+    parameters: SearchParameters,
   ): Promise<SearchResponse> {
     const res = await this.fetchPexels<SearchResponse>(
       "/v1/search",
-      parameters
+      parameters,
     );
 
     return res;

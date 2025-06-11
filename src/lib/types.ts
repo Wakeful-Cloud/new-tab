@@ -1,5 +1,5 @@
 /**
- * @fileoverview Common TypeScript types
+ * @file Common TypeScript types
  */
 
 /**
@@ -10,7 +10,7 @@ export enum ShortcutLinkHint {
   DNS_PREFETCH = "dns-prefetch",
   PRECONNECT = "preconnect",
   PREFETCH = "prefetch",
-  PRERENDER = "prerender"
+  PRERENDER = "prerender",
 }
 
 /**
@@ -95,7 +95,7 @@ export enum BackgroundProvider {
   /**
    * Unsplash API
    */
-  UNSPLASH = "unsplash"
+  UNSPLASH = "unsplash",
 }
 
 /**
@@ -133,7 +133,7 @@ export enum BackgroundCategory {
   TEXTURES = "textures",
   TRAINS = "trains",
   WEATHER = "weather",
-  WILD_ANIMALS = "wild animals"
+  WILD_ANIMALS = "wild animals",
 }
 
 /**

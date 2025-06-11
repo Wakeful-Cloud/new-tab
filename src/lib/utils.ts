@@ -1,5 +1,5 @@
 /**
- * @fileoverview Miscellaneous utilities
+ * @file Miscellaneous utilities
  */
 
 /**
@@ -13,8 +13,8 @@ export const createDataURL = async (raw: Blob) => {
 
   await new Promise(resolve =>
     reader.addEventListener("load", resolve, {
-      once: true
-    })
+      once: true,
+    }),
   );
 
   return reader.result as string;

@@ -1,11 +1,12 @@
 /**
- * @fileoverview Shortcut metadata drawer mode component
+ * @file Shortcut metadata drawer mode component
  */
 
-//Imports
+// Imports
 import {capitalize} from "lodash-es";
 import {FloppyDisk, Image, Lightbulb, Link, TextT, Trash} from "phosphor-solid";
-import {createEffect, createMemo, createSignal, type Component} from "solid-js";
+import {type Component, createEffect, createMemo, createSignal} from "solid-js";
+
 import Button from "~/components/Button";
 import FileUpload from "~/components/FileUpload";
 import FormField from "~/components/FormField";
@@ -41,9 +42,9 @@ const ShortcutMode: Component<ShortcutModeProps> = props => {
       provider =>
         ({
           label: capitalize(provider),
-          value: provider
-        }) as MultiselectOption<string>
-    )
+          value: provider,
+        }) as MultiselectOption<string>,
+    ),
   );
 
   const onIconChange = async (files: File[]) => {
@@ -58,22 +59,24 @@ const ShortcutMode: Component<ShortcutModeProps> = props => {
   const onSave = (event: Event) => {
     event.preventDefault();
 
-    //Get the ID
+    // Get the ID
     let id = props.metadata?.id;
+
     if (id === undefined) {
       const random = new Uint32Array(10);
       window.crypto.getRandomValues(random);
+
       id = Array.from(random)
-        .map(n => n.toString(16).padStart(2, "0"))
+        .map(number => number.toString(16).padStart(2, "0"))
         .join("");
     }
 
     props.onSave({
-      id,
-      title: title(),
       icon: icon(),
+      id,
       link: link(),
-      linkHint: linkHint()
+      linkHint: linkHint(),
+      title: title(),
     });
   };
 

@@ -1,24 +1,24 @@
 /**
- * @fileoverview Main entrypoint
- * @refresh reload
+ * @file Main entrypoint
  */
 
-//Imports
-import "@unocss/reset/tailwind.css";
-import {render} from "solid-js/web";
+// Imports
 import "virtual:uno.css";
-import App from "~/App";
 import "~/index.css";
 
-//Get the root element
-const root = document.getElementById("root");
+import {render} from "solid-js/web";
 
-//Mount the root element
+import App from "~/App";
+
+// Get the root element
+const root = document.getElementById("root")!;
+
+// Mount the root element
 if (import.meta.env.DEV && !(root instanceof HTMLElement)) {
   throw new Error(
-    "Root element not found. Did you forget to add it to your index.html? Or maybe the id attribute got misspelled?"
+    "Root element not found. Did you forget to add it to your index.html? Or maybe the id attribute got misspelled?",
   );
 }
 
-//Render
-render(() => <App />, root!);
+// Render
+render(() => <App />, root);

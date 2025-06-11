@@ -1,15 +1,16 @@
 /**
- * @fileoverview File upload component
+ * @file File upload component
  */
 
-//Imports
+// Imports
 import {
+  type Component,
+  createSignal,
   JSXElement,
   Show,
-  createSignal,
   useContext,
-  type Component
 } from "solid-js";
+
 import {FormFieldIdContext} from "~/components/FormField";
 
 interface FileUploadProps {
@@ -31,19 +32,20 @@ const FileUpload: Component<FileUploadProps> = props => {
       return;
     }
 
-    //Get the target
+    // Get the target
     const file = event.target as HTMLInputElement;
 
-    //Get files
+    // Get files
     if (file.files === null) {
       throw new TypeError("File list is null");
     }
+
     const files = Array.from(file.files);
 
-    //Update the filenames
-    setFilenames(files.map(file => file.name));
+    // Update the filenames
+    setFilenames(files.map(currentFile => currentFile.name));
 
-    //Emit
+    // Emit
     props.onUpload(files);
   };
 
@@ -54,7 +56,7 @@ const FileUpload: Component<FileUploadProps> = props => {
       <span
         classList={{
           "ml-2": props.leading !== undefined,
-          "mr-2": props.trailing !== undefined
+          "mr-2": props.trailing !== undefined,
         }}
       >
         {props.label} {filenames().join(", ")}

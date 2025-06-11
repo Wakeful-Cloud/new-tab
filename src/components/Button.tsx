@@ -1,9 +1,9 @@
 /**
- * @fileoverview Button component
+ * @file Button component
  */
 
-//Imports
-import {JSXElement, Show, type Component} from "solid-js";
+// Imports
+import {type Component, JSXElement, Show} from "solid-js";
 
 interface TextBoxProps {
   label: string;
@@ -23,7 +23,7 @@ const TextBox: Component<TextBoxProps> = props => {
       <span
         classList={{
           "ml-2": props.leading !== undefined,
-          "mr-2": props.trailing !== undefined
+          "mr-2": props.trailing !== undefined,
         }}
       >
         {props.label}

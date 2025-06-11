@@ -1,8 +1,8 @@
 /**
- * @fileoverview TypeScript types
+ * @file TypeScript types
  */
 
-//Imports
+// Imports
 import type {Manifest} from "webextension-polyfill";
 
 /**

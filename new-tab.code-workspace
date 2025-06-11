@@ -1,0 +1,56 @@
+{
+  "folders": [
+    {
+      "path": ".",
+      "name": "root"
+    }
+  ],
+  "extensions": {
+    "recommendations": [
+      "EditorConfig.EditorConfig",
+      "antfu.unocss",
+      "dbaeumer.vscode-eslint",
+      "denoland.vscode-deno",
+      "esbenp.prettier-vscode"
+    ]
+  },
+  "launch": {
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "name": "Build",
+        "request": "launch",
+        "runtimeArgs": [
+          "run-script",
+          "build"
+        ],
+        "runtimeExecutable": "npm",
+        "skipFiles": [
+          "<node_internals>/**"
+        ],
+        "type": "node"
+      },
+      {
+        "name": "Dev",
+        "request": "launch",
+        "runtimeArgs": [
+          "run-script",
+          "dev"
+        ],
+        "runtimeExecutable": "npm",
+        "skipFiles": [
+          "<node_internals>/**"
+        ],
+        "type": "node"
+      }
+    ],
+    "compounds": []
+  },
+  "settings": {
+    "editor.formatOnSave": true,
+    "editor.formatOnSaveMode": "file",
+    "editor.codeActionsOnSave": [
+      "source.fixAll"
+    ]
+  }
+}

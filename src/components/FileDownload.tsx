@@ -1,9 +1,9 @@
 /**
- * @fileoverview File download component
+ * @file File download component
  */
 
-//Imports
-import {JSXElement, Show, createMemo, type Component} from "solid-js";
+// Imports
+import {type Component, createMemo, JSXElement, Show} from "solid-js";
 
 interface FileDownloadProps {
   label: string;
@@ -28,7 +28,7 @@ const FileDownload: Component<FileDownloadProps> = props => {
       <span
         classList={{
           "ml-2": props.leading !== undefined,
-          "mr-2": props.trailing !== undefined
+          "mr-2": props.trailing !== undefined,
         }}
       >
         {props.label}

@@ -1,8 +1,8 @@
 /**
- * @fileoverview General settings and information drawer mode component
+ * @file General settings and information drawer mode component
  */
 
-//Imports
+// Imports
 import {capitalize} from "lodash-es";
 import {
   ArrowClockwise,
@@ -13,15 +13,16 @@ import {
   Globe,
   Image,
   Plus,
-  UploadSimple
+  UploadSimple,
 } from "phosphor-solid";
 import {
-  Show,
+  type Component,
   createEffect,
   createMemo,
   createSignal,
-  type Component
+  Show,
 } from "solid-js";
+
 import Button from "~/components/Button";
 import FileDownload from "~/components/FileDownload";
 import FileUpload from "~/components/FileUpload";
@@ -40,50 +41,53 @@ interface GeneralModeProps {
 const refreshAfterOptions: MultiselectOption<number>[] = [
   {
     label: "15 Minutes",
-    value: 1000 * 60 * 10
+    value: 1000 * 60 * 10,
   },
   {
     label: "30 Minutes",
-    value: 1000 * 60 * 30
+    value: 1000 * 60 * 30,
   },
   {
     label: "1 Hour",
-    value: 1000 * 60 * 60
+    value: 1000 * 60 * 60,
   },
   {
     label: "3 Hours",
-    value: 1000 * 60 * 60
+    value: 1000 * 60 * 60,
   },
   {
     label: "6 Hours",
-    value: 1000 * 60 * 60 * 6
+    value: 1000 * 60 * 60 * 6,
   },
   {
     label: "12 Hours",
-    value: 1000 * 60 * 60 * 12
+    value: 1000 * 60 * 60 * 12,
   },
   {
     label: "1 Day",
-    value: 1000 * 60 * 60 * 24
+    value: 1000 * 60 * 60 * 24,
   },
   {
     label: "7 Days",
-    value: 1000 * 60 * 60 * 24 * 7
+    value: 1000 * 60 * 60 * 24 * 7,
   },
   {
     label: "Never",
-    value: -1
-  }
+    value: -1,
+  },
 ];
 
 const GeneralMode: Component<GeneralModeProps> = props => {
   const [category, setCategory] = createSignal<BackgroundCategory>(
-    BackgroundCategory.NONE
+    BackgroundCategory.NONE,
   );
+
   const [customBackground, setCustomBackground] = createSignal<string>();
+
   const [provider, setProvider] = createSignal<BackgroundProvider>(
-    BackgroundProvider.PEXELS
+    BackgroundProvider.PEXELS,
   );
+
   const [refreshAfter, setRefreshAfter] = createSignal(0);
 
   createEffect(() => {
@@ -97,22 +101,22 @@ const GeneralMode: Component<GeneralModeProps> = props => {
 
   const backgroundProviderOptions = createMemo(() =>
     Object.values(BackgroundProvider).map(
-      provider =>
+      backgroundProvider =>
         ({
-          label: capitalize(provider),
-          value: provider
-        }) as MultiselectOption<string>
-    )
+          label: capitalize(backgroundProvider),
+          value: backgroundProvider,
+        }) as MultiselectOption<string>,
+    ),
   );
 
   const backgroundCategoryOptions = createMemo(() =>
     Object.values(BackgroundCategory).map(
-      category =>
+      backgroundCategory =>
         ({
-          label: capitalize(category),
-          value: category
-        }) as MultiselectOption<string>
-    )
+          label: capitalize(backgroundCategory),
+          value: backgroundCategory,
+        }) as MultiselectOption<string>,
+    ),
   );
 
   const onUploadCustomBackground = async (files: File[]) => {
@@ -120,36 +124,36 @@ const GeneralMode: Component<GeneralModeProps> = props => {
       throw new Error(`Expected 1 file, got ${files.length}!`);
     }
 
-    //Convert to a data URL
+    // Convert to a data URL
     const dataURL = await createDataURL(files[0]!);
 
-    //Update the background
+    // Update the background
     setCustomBackground(dataURL);
   };
 
   const onSaveSettings = async (event: Event) => {
     event.preventDefault();
 
-    //Update store
+    // Update store
     setStore({
       ...store,
       background: {
         ...store.background,
         category: category(),
         provider: provider(),
-        refreshAfter: refreshAfter()
-      }
+        refreshAfter: refreshAfter(),
+      },
     });
 
-    //Regenerate background
+    // Regenerate background
     await generateBackground(customBackground());
   };
 
   const onResetSettings = async () => {
-    //Reset store
+    // Reset store
     resetStore();
 
-    //Regenerate background
+    // Regenerate background
     await generateBackground();
   };
 
@@ -157,7 +161,7 @@ const GeneralMode: Component<GeneralModeProps> = props => {
     const raw = JSON.stringify(store, undefined, 2);
 
     const blob = new Blob([raw], {
-      type: "application/json"
+      type: "application/json",
     });
 
     return blob;
@@ -168,11 +172,11 @@ const GeneralMode: Component<GeneralModeProps> = props => {
       throw new Error(`Expected 1 file, got ${files.length}!`);
     }
 
-    //Parse the file
+    // Parse the file
     const raw = await files[0]!.text();
     const deserialized = JSON.parse(raw);
 
-    //Update store
+    // Update store
     setStore(deserialized);
   };
 

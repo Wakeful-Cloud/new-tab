@@ -1,9 +1,10 @@
 /**
- * @fileoverview Text box component
+ * @file Text box component
  */
 
-//Imports
-import {JSXElement, Show, useContext, type Component} from "solid-js";
+// Imports
+import {type Component, JSXElement, Show, useContext} from "solid-js";
+
 import {FormFieldIdContext} from "~/components/FormField";
 
 interface TextBoxProps {
@@ -26,7 +27,7 @@ const TextBox: Component<TextBoxProps> = props => {
         class="bg-transparent outline-none w-full"
         classList={{
           "ml-2": props.leading !== undefined,
-          "mr-2": props.trailing !== undefined
+          "mr-2": props.trailing !== undefined,
         }}
         id={id}
         onChange={event => props.onChange?.(event.target.value)}

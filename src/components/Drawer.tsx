@@ -1,10 +1,10 @@
 /**
- * @fileoverview Drawer component
+ * @file Drawer component
  */
 
-//Imports
+// Imports
 import {X} from "phosphor-solid";
-import {JSXElement, Show, type Component, type Setter} from "solid-js";
+import {type Component, JSXElement, type Setter, Show} from "solid-js";
 
 interface DrawerProps {
   open: boolean;
@@ -28,7 +28,7 @@ const Drawer: Component<DrawerProps> = props => {
           props.open
             ? {}
             : {
-                right: "-84rem"
+                right: "-84rem",
               }
         }
       >

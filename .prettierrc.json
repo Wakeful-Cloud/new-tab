@@ -2,5 +2,9 @@
   "arrowParens": "avoid",
   "bracketSameLine": false,
   "bracketSpacing": false,
-  "trailingComma": "none"
+  "multilineArraysWrapThreshold": 2,
+  "htmlWhitespaceSensitivity": "strict",
+  "plugins": [
+    "prettier-plugin-multiline-arrays"
+  ]
 }

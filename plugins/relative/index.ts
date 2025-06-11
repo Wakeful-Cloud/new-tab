@@ -1,42 +1,43 @@
 /**
- * @fileoverview Vite relative path plugin
+ * @file Vite relative path plugin
  */
 
-//Imports
+// Imports
+import {dirname, join, relative} from "node:path";
+
 import {Plugin, ResolvedConfig} from "vite";
-import {dirname, join, relative} from "path";
 
 /**
  * Vite relative path plugin factory
  * @returns Plugin instance
  */
 const plugin = () => {
-  //State
+  // State
   let config: ResolvedConfig;
 
   return {
-    name: "relative",
-    enforce: "post",
     apply: "build",
     configResolved: resolved => {
-      //Update the config
+      // Update the config
       config = resolved;
     },
+    enforce: "post",
+    name: "relative",
     transformIndexHtml: (html, ctx) => {
-      //Get the HTML path
+      // Get the HTML path
       const absolutePath = join(config.build.outDir, ctx.path);
 
-      //Get the relative path
+      // Get the relative path
       const relativePath = join(
         relative(dirname(absolutePath), config.build.outDir),
-        "assets"
+        "assets",
       );
 
-      //Replace the paths
-      return html.replace(/(?<=")\/assets(?=\/[^"]+)/g, relativePath);
-    }
+      // Replace the paths
+      return html.replace(/(?<=")\/assets(?=\/[^"]+)/gu, relativePath);
+    },
   } as Plugin;
 };
 
-//Export
+// Export
 export default plugin;

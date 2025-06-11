@@ -1,13 +1,13 @@
 /**
- * @fileoverview Generic form field component
+ * @file Generic form field component
  */
 
-//Imports
+// Imports
 import {
-  JSXElement,
+  type Component,
   createContext,
   createUniqueId,
-  type Component
+  JSXElement,
 } from "solid-js";
 
 interface FormFieldProps {

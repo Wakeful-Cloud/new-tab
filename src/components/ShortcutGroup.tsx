@@ -1,11 +1,12 @@
 /**
- * @fileoverview Shortcut group component
+ * @file Shortcut group component
  */
 
-//Imports
-import {For, type Component} from "solid-js";
-import {ShortcutGroupMetadata} from "~/lib/types";
+// Imports
+import {type Component, For} from "solid-js";
+
 import Shortcut from "~/components/Shortcut";
+import {ShortcutGroupMetadata} from "~/lib/types";
 
 interface ShortcutGroupProps {
   metadata: ShortcutGroupMetadata;

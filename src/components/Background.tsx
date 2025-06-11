@@ -1,9 +1,10 @@
 /**
- * @fileoverview Background component
+ * @file Background component
  */
 
-//Imports
-import {Show, type Component} from "solid-js";
+// Imports
+import {type Component, Show} from "solid-js";
+
 import {BackgroundData} from "~/lib/types";
 
 interface BackgroundProps {

@@ -1,10 +1,11 @@
 /**
- * @fileoverview State stores
+ * @file State stores
  */
 
-//Imports
+// Imports
 import {cloneDeep} from "lodash-es";
-import {StoreSetter, createStore, unwrap} from "solid-js/store";
+import {createStore, StoreSetter, unwrap} from "solid-js/store";
+
 import {get, set} from "~/lib/storage";
 import {BackgroundCategory, BackgroundProvider, Store} from "~/lib/types";
 
@@ -17,27 +18,29 @@ const STORE_STORAGE_KEY = "io.github.wakeful-clouds.new-tab.store";
  * Default global store value
  */
 const defaultStore = {
-  version: import.meta.env.VERSION as string,
   background: {
-    provider: BackgroundProvider.PEXELS,
     category: BackgroundCategory.NONE,
     previousIDs: [],
-    refreshAfter: 1000 * 60 * 60 //1 hour
+    provider: BackgroundProvider.PEXELS,
+    // 1 hour
+    refreshAfter: 1000 * 60 * 60,
   },
-  shortcuts: []
+  shortcuts: [],
+  version: import.meta.env.VERSION as string,
 } as Store;
 
 /**
  * Global store
  */
 const [store, baseSetStore] = createStore<Store>(cloneDeep(defaultStore));
+
 export {store};
 
 /**
  * Initialize the global store
  */
 export const initializeStore = async () => {
-  //Get initial value from storage
+  // Get initial value from storage
   const initial = await get<Store>(STORE_STORAGE_KEY);
 
   if (initial !== undefined) {
@@ -50,14 +53,15 @@ export const initializeStore = async () => {
  * @param setter Store setter
  */
 export const setStore = (setter: StoreSetter<Store, []>) => {
-  //Update the store
+  // Update the store
   baseSetStore(setter);
 
-  //Save
+  // Save
   set<Store>(STORE_STORAGE_KEY, unwrap(store));
 };
 
 /**
  * Reset the global store
+ * @returns Nothing
  */
 export const resetStore = () => setStore(cloneDeep(defaultStore));

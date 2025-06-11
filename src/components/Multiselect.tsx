@@ -1,9 +1,10 @@
 /**
- * @fileoverview Multiselect component
+ * @file Multiselect component
  */
 
-//Imports
-import {For, JSXElement, Show, useContext, type Component} from "solid-js";
+// Imports
+import {type Component, For, JSXElement, Show, useContext} from "solid-js";
+
 import {FormFieldIdContext} from "~/components/FormField";
 
 export interface MultiselectOption<T> {
@@ -28,21 +29,21 @@ const Multiselect: Component<MultiselectProps<any>> = props => {
       return;
     }
 
-    //Get the raw value
+    // Get the raw value
     const raw = (event.target as HTMLSelectElement).value;
 
-    //Find the matching option
+    // Find the matching option
     const option = props.options.find(
-      option => JSON.stringify(option.value) === raw
+      currentOption => JSON.stringify(currentOption.value) === raw,
     );
 
     if (option === undefined) {
       throw new TypeError(
-        `[Multiselect] Could not find option for value ${raw}!`
+        `[Multiselect] Could not find option for value ${raw}!`,
       );
     }
 
-    //Emit
+    // Emit
     props.onChange(option.value);
   };
 
@@ -54,7 +55,7 @@ const Multiselect: Component<MultiselectProps<any>> = props => {
         class="bg-transparent cursor-pointer dark-within:focus:text-gray-500 focus-within:text-gray-400 outline-none w-full"
         classList={{
           "ml-2": props.leading !== undefined,
-          "mr-2": props.trailing !== undefined
+          "mr-2": props.trailing !== undefined,
         }}
         id={id}
         multiple={props.multiple}

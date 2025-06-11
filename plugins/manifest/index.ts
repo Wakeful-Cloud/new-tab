@@ -1,59 +1,61 @@
 /**
- * @fileoverview Vite manifest plugin
+ * @file Vite manifest plugin
  */
 
-//Imports
-import {Options} from "./types";
-import {Plugin, ResolvedConfig} from "vite";
-import {dirname, join} from "path";
+// Imports
+import {mkdir, writeFile} from "node:fs/promises";
+import {dirname, join} from "node:path";
+
 import {merge} from "lodash-es";
-import {mkdir, writeFile} from "fs/promises";
+import {Plugin, ResolvedConfig} from "vite";
+
+import {Options} from "./types";
 
 /**
  * Vite manifest plugin factory
- * @param rawOptions Plugin options
+ * @param options Plugin options
  * @returns Plugin instance
  */
 const plugin = (options: Options) => {
-  //Default options
-  options = merge(
+  // Resolve the options
+  const resolvedOptions = merge(
     {
-      dst: "manifest.json"
+      dst: "manifest.json",
     },
-    options
-  );
+    options,
+  ) as Options;
 
-  //State
+  // State
   let config: ResolvedConfig;
 
   return {
-    name: "manifest",
-    configResolved: resolved => {
-      //Update the config
-      config = resolved;
-    },
     closeBundle: async () => {
-      //Ensure the manifest exists
-      if (options.manifest === undefined) {
+      // Ensure the manifest exists
+      if (resolvedOptions.manifest === undefined) {
         throw new Error("Manifest is undefined!");
       }
 
-      //Stringify the manifest
-      const str = JSON.stringify(options.manifest, undefined, 2);
+      // Stringify the manifest
+      const str = JSON.stringify(resolvedOptions.manifest, undefined, 2);
 
-      //Get the destination path
-      const dst = join(config.build.outDir, options.dst!);
+      // Get the destination path
+      const dst = join(config.build.outDir, resolvedOptions.dst!);
 
-      //Create the manifest folder
+      // Create the manifest folder
       await mkdir(dirname(dst), {
-        recursive: true
+        recursive: true,
       });
 
-      //Write the manifest
+      // Write the manifest
       await writeFile(dst, str);
-    }
+    },
+    configResolved: resolved => {
+      // Update the config
+      config = resolved;
+    },
+    name: "manifest",
   } as Plugin;
 };
 
-//Export
+// Export
 export default plugin;

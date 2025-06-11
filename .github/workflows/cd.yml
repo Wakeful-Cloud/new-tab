@@ -23,24 +23,22 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup NodeJS
-        uses: actions/setup-node@v4
+      - name: Setup Deno
+        uses: denoland/setup-deno@v2
         with:
-          node-version: latest
+          deno-version: v2.x
 
       - name: Install dependencies
-        run: npm install
-        env:
-          NODE_ENV: production
+        run: deno install
 
       - name: Setup Go
         uses: actions/setup-go@v5
 
       - name: Install CRX3
-        run: go install github.com/mediabuyerbot/go-crx3/crx3@v1.3.1
+        run: go install github.com/mediabuyerbot/go-crx3/crx3@v1.6.0
 
       - name: Build
-        run: npm run build
+        run: deno run build
         env:
           VITE_PEXELS_API_KEY: ${{ secrets.VITE_PEXELS_API_KEY }}
           VITE_UNSPLASH_ACCESS_KEY: ${{ secrets.VITE_UNSPLASH_ACCESS_KEY }}
@@ -49,17 +47,17 @@ jobs:
         run: echo "${{ secrets.CRX_SIGNING_KEY }}" > new-tab.crx.pem
 
       - name: Pack extension for Chrome (CRX)
-        run: npm run pack:chrome:crx
+        run: deno run pack:chrome:crx
 
       - name: Destroy the CRX signing key
         if: always()
         run: rm -f new-tab.pem
 
       - name: Pack extension for Chrome (ZIP)
-        run: npm run pack:chrome:zip
+        run: deno run pack:chrome:zip
 
       - name: Pack extension for Firefox
-        run: npm run pack:firefox
+        run: deno run pack:firefox
         env:
           WEB_EXT_API_KEY: ${{ secrets.WEB_EXT_API_KEY }}
           WEB_EXT_API_SECRET: ${{ secrets.WEB_EXT_API_SECRET }}
