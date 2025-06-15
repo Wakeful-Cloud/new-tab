@@ -15,13 +15,7 @@ import {
   Plus,
   UploadSimple,
 } from "phosphor-solid";
-import {
-  type Component,
-  createEffect,
-  createMemo,
-  createSignal,
-  Show,
-} from "solid-js";
+import {createEffect, createMemo, createSignal, Show} from "solid-js";
 
 import Button from "~/components/Button";
 import FileDownload from "~/components/FileDownload";
@@ -77,7 +71,7 @@ const refreshAfterOptions: MultiselectOption<number>[] = [
   },
 ];
 
-const GeneralMode: Component<GeneralModeProps> = props => {
+const GeneralMode = (props: GeneralModeProps) => {
   const [category, setCategory] = createSignal<BackgroundCategory>(
     BackgroundCategory.NONE,
   );

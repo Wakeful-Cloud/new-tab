@@ -4,7 +4,7 @@
 
 // Imports
 import {X} from "phosphor-solid";
-import {type Component, JSXElement, type Setter, Show} from "solid-js";
+import {JSXElement, type Setter, Show} from "solid-js";
 
 interface DrawerProps {
   open: boolean;
@@ -12,7 +12,7 @@ interface DrawerProps {
   children: JSXElement;
 }
 
-const Drawer: Component<DrawerProps> = props => {
+const Drawer = (props: DrawerProps) => {
   return (
     <div class="absolute bottom-0 left-0 overflow-hidden pointer-events-none right-0 top-0 z-10">
       <Show when={props.open}>
@@ -34,7 +34,7 @@ const Drawer: Component<DrawerProps> = props => {
       >
         <div class="centered-row w-full">
           <button
-            class="p-1 outline-none focus:text-gray-400 dark:focus:text-gray-500"
+            class="cursor-pointer dark:focus:text-gray-500 focus:text-gray-400 outline-none p-1"
             onClick={() => props.setOpen(false)}
           >
             <X size="1.5rem" />

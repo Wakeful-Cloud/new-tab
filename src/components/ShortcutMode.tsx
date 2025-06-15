@@ -5,7 +5,7 @@
 // Imports
 import {capitalize} from "lodash-es";
 import {FloppyDisk, Image, Lightbulb, Link, TextT, Trash} from "phosphor-solid";
-import {type Component, createEffect, createMemo, createSignal} from "solid-js";
+import {createEffect, createMemo, createSignal} from "solid-js";
 
 import Button from "~/components/Button";
 import FileUpload from "~/components/FileUpload";
@@ -22,7 +22,7 @@ interface ShortcutModeProps {
   onDelete: () => void;
 }
 
-const ShortcutMode: Component<ShortcutModeProps> = props => {
+const ShortcutMode = (props: ShortcutModeProps) => {
   const [title, setTitle] = createSignal("");
   const [icon, setIcon] = createSignal("");
   const [link, setLink] = createSignal("");
@@ -114,7 +114,7 @@ const ShortcutMode: Component<ShortcutModeProps> = props => {
         </FormField>
 
         <FormField label="Link Hint">
-          <Multiselect
+          <Multiselect<string>
             leading={<Lightbulb />}
             multiple={false}
             onChange={setLinkHint}

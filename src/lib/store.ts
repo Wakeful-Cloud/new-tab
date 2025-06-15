@@ -12,7 +12,7 @@ import {BackgroundCategory, BackgroundProvider, Store} from "~/lib/types";
 /**
  * Store storage key
  */
-const STORE_STORAGE_KEY = "io.github.wakeful-clouds.new-tab.store";
+const STORE_STORAGE_KEY = "io.github.wakeful-cloud.new-tab.store";
 
 /**
  * Default global store value
@@ -26,7 +26,7 @@ const defaultStore = {
     refreshAfter: 1000 * 60 * 60,
   },
   shortcuts: [],
-  version: import.meta.env.VERSION as string,
+  version: import.meta.env.VERSION,
 } as Store;
 
 /**

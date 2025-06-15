@@ -3,13 +3,7 @@
  */
 
 // Imports
-import {
-  type Component,
-  createSignal,
-  JSXElement,
-  Show,
-  useContext,
-} from "solid-js";
+import {createSignal, JSXElement, Show, useContext} from "solid-js";
 
 import {FormFieldIdContext} from "~/components/FormField";
 
@@ -22,7 +16,7 @@ interface FileUploadProps {
   trailing?: JSXElement;
 }
 
-const FileUpload: Component<FileUploadProps> = props => {
+const FileUpload = (props: FileUploadProps) => {
   const id = useContext(FormFieldIdContext);
 
   const [filenames, setFilenames] = createSignal<string[]>([]);

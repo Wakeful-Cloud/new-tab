@@ -3,7 +3,7 @@
  */
 
 // Imports
-import {type Component, createMemo, JSXElement, Show} from "solid-js";
+import {createMemo, JSXElement, Show} from "solid-js";
 
 interface FileDownloadProps {
   label: string;
@@ -13,7 +13,7 @@ interface FileDownloadProps {
   value: Blob;
 }
 
-const FileDownload: Component<FileDownloadProps> = props => {
+const FileDownload = (props: FileDownloadProps) => {
   const href = createMemo(() => URL.createObjectURL(props.value));
 
   return (

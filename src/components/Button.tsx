@@ -3,7 +3,7 @@
  */
 
 // Imports
-import {type Component, JSXElement, Show} from "solid-js";
+import {JSXElement, Show} from "solid-js";
 
 interface TextBoxProps {
   label: string;
@@ -12,10 +12,10 @@ interface TextBoxProps {
   trailing?: JSXElement;
 }
 
-const TextBox: Component<TextBoxProps> = props => {
+const TextBox = (props: TextBoxProps) => {
   return (
     <button
-      class="border-1 centered-row dark-within:focus:text-gray-500 focus-within:text-gray-400 my-1 outline-none p-2 rounded-md w-full"
+      class="border-1 centered-row cursor-pointer dark-within:focus:text-gray-500 focus-within:text-gray-400 my-1 outline-none p-2 rounded-md w-full"
       onClick={() => props.onClick()}
     >
       <Show when={props.leading !== undefined}>{props.leading}</Show>

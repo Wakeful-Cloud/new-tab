@@ -3,7 +3,7 @@
  */
 
 // Imports
-import {type Component, For, JSXElement, Show, useContext} from "solid-js";
+import {For, JSXElement, Show, useContext} from "solid-js";
 
 import {FormFieldIdContext} from "~/components/FormField";
 
@@ -21,7 +21,7 @@ interface MultiselectProps<T> {
   value?: T;
 }
 
-const Multiselect: Component<MultiselectProps<any>> = props => {
+const Multiselect = <T,>(props: MultiselectProps<T>) => {
   const id = useContext(FormFieldIdContext);
 
   const onChange = (event: Event) => {

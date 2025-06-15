@@ -3,7 +3,7 @@
  */
 
 // Imports
-import {type Component, Show} from "solid-js";
+import {Show} from "solid-js";
 
 import {BackgroundData} from "~/lib/types";
 
@@ -11,7 +11,7 @@ interface BackgroundProps {
   background?: BackgroundData;
 }
 
-const Background: Component<BackgroundProps> = props => {
+const Background = (props: BackgroundProps) => {
   return (
     <div class="absolute bottom-0 left-0 pointer-events-none right-0 top-0">
       <div class="absolute dark:bg-dark-700 h-full object-cover w-full -z-2" />

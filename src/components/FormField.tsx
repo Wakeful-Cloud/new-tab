@@ -3,12 +3,7 @@
  */
 
 // Imports
-import {
-  type Component,
-  createContext,
-  createUniqueId,
-  JSXElement,
-} from "solid-js";
+import {createContext, createUniqueId, JSXElement} from "solid-js";
 
 interface FormFieldProps {
   label: string;
@@ -17,7 +12,7 @@ interface FormFieldProps {
 
 export const FormFieldIdContext = createContext<string>();
 
-const FormField: Component<FormFieldProps> = props => {
+const FormField = (props: FormFieldProps) => {
   const id = createUniqueId();
 
   return (

@@ -1,4 +1,3 @@
-/* eslint-disable camelcase */
 /**
  * @file Background helper
  */
@@ -65,6 +64,7 @@ const getPexelsBackground = async (width: number, height: number) => {
     const searchRes = await pexelsApi.searchPhotos({
       orientation: "landscape",
       page: i,
+      // eslint-disable-next-line camelcase
       per_page: 10,
       query,
     });

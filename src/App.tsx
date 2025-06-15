@@ -6,7 +6,6 @@
 import {capitalize} from "lodash-es";
 import {ArrowClockwise, Gear, Image} from "phosphor-solid";
 import {
-  type Component,
   createEffect,
   createMemo,
   createSignal,
@@ -48,7 +47,7 @@ enum DrawerMode {
  */
 const darkQuery = window.matchMedia("(prefers-color-scheme: dark)");
 
-const App: Component = () => {
+const App = () => {
   // Reactively update dark mode
   const [dark, setDark] = createSignal(darkQuery.matches);
   const darkListener = (event: MediaQueryListEvent) => setDark(event.matches);
@@ -159,7 +158,7 @@ const App: Component = () => {
     <>
       <button
         aria-label="Open settings"
-        class="absolute p-2 acrylic top-2 right-2 rounded-full"
+        class="absolute acrylic cursor-pointer p-2 right-2 rounded-full top-2"
         onClick={onOpenSettings}
       >
         <Gear size="1.5rem" />
@@ -167,7 +166,7 @@ const App: Component = () => {
 
       <button
         aria-label="Manually refresh background"
-        class="absolute p-2 acrylic bottom-2 right-2 rounded-full"
+        class="absolute acrylic bottom-2 cursor-pointer p-2 right-2 rounded-full"
         onClick={onRefreshBackground}
       >
         <ArrowClockwise size="1.5rem" />

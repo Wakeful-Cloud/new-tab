@@ -22,7 +22,7 @@ A simple browser extension that displays a random image along with bookmarks on 
 4. Drag the downloaded `new-tab.crx` file onto the page (it's a little finicky and can take a few attempts to work)
 5. Click `Add extension`
 
-> [!NOTE]  
+> [!NOTE]
 > If this method doesn't work, try the unpacked method below.
 
 #### Chromium-based Browsers (Unpacked)
@@ -37,7 +37,7 @@ A simple browser extension that displays a random image along with bookmarks on 
 5. Click `Load unpacked`
 6. Select the extracted `new-tab` folder
 
-> [!NOTE]  
+> [!NOTE]
 > If you accidentally delete the extracted `new-tab` folder, you will have to reinstall the extension.
 
 #### Firefox

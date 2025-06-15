@@ -3,7 +3,7 @@
  */
 
 // Imports
-import {type Component, JSXElement, Show, useContext} from "solid-js";
+import {JSXElement, Show, useContext} from "solid-js";
 
 import {FormFieldIdContext} from "~/components/FormField";
 
@@ -16,7 +16,7 @@ interface TextBoxProps {
   value: string;
 }
 
-const TextBox: Component<TextBoxProps> = props => {
+const TextBox = (props: TextBoxProps) => {
   const id = useContext(FormFieldIdContext);
 
   return (

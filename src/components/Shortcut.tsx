@@ -3,7 +3,7 @@
  */
 
 // Imports
-import {type Component, Show} from "solid-js";
+import {Show} from "solid-js";
 
 import {ShortcutLinkHint, ShortcutMetadata} from "~/lib/types";
 
@@ -12,7 +12,7 @@ interface ShortcutProps {
   onEdit: () => void;
 }
 
-const Shortcut: Component<ShortcutProps> = props => {
+const Shortcut = (props: ShortcutProps) => {
   const onContextMenu = (event: MouseEvent) => {
     event.preventDefault();
     props.onEdit();

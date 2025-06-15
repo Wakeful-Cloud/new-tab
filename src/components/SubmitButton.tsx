@@ -3,7 +3,7 @@
  */
 
 // Imports
-import {type Component, JSXElement, Show, useContext} from "solid-js";
+import {JSXElement, Show, useContext} from "solid-js";
 
 import {FormFieldIdContext} from "~/components/FormField";
 
@@ -13,7 +13,7 @@ interface SubmitButtonProps {
   trailing?: JSXElement;
 }
 
-const SubmitButton: Component<SubmitButtonProps> = props => {
+const SubmitButton = (props: SubmitButtonProps) => {
   const id = useContext(FormFieldIdContext);
 
   return (
