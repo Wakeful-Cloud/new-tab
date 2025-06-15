@@ -39,9 +39,10 @@ export default defineConfig({
     }),
     manifest({
       manifest: {
+        author: "Wakeful Cloud",
         browser_specific_settings: {
           gecko: {
-            id: "extension@io.github.wakeful-clouds.new-tab",
+            id: "extension@io.github.wakeful-cloud.new-tab",
           },
         },
         chrome_settings_overrides: {
@@ -50,7 +51,16 @@ export default defineConfig({
         chrome_url_overrides: {
           newtab: "index.html",
         },
+        content_security_policy: {
+          extension_pages:
+            "default-src 'self'; connect-src 'self' https://api.pexels.com https://images.pexels.com https://api.unsplash.com https://images.unsplash.com; img-src 'self' data:",
+        },
         description: pkg.description,
+        developer: {
+          name: "Wakeful Cloud",
+          url: "https://wakefulcloud.dev",
+        },
+        homepage_url: "https://github.com/Wakeful-Cloud/new-tab",
         manifest_version: 3,
         name: "New Tab",
         permissions: ["storage", "unlimitedStorage"],
