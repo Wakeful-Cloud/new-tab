@@ -53,7 +53,7 @@ export default defineConfig({
         },
         content_security_policy: {
           extension_pages:
-            "default-src 'self'; connect-src 'self' https://api.pexels.com https://images.pexels.com https://api.unsplash.com https://images.unsplash.com; img-src 'self' data:",
+            "default-src 'self'; connect-src 'self' data: https://api.pexels.com https://images.pexels.com https://api.unsplash.com https://images.unsplash.com; img-src 'self' data:",
         },
         description: pkg.description,
         developer: {
