@@ -8,9 +8,6 @@ on:
     types:
       - published
 
-  # Run when manually triggered
-  workflow_dispatch:
-
 permissions:
   contents: write
 
@@ -42,8 +39,8 @@ jobs:
       - name: Build
         run: npm run build
         env:
-          VITE_PEXELS_API_KEY: ${{ secrets.VITE_PEXELS_API_KEY }}
-          VITE_UNSPLASH_ACCESS_KEY: ${{ secrets.VITE_UNSPLASH_ACCESS_KEY }}
+          VITE_PEXELS_API_KEY: "${{ secrets.VITE_PEXELS_API_KEY }}"
+          VITE_UNSPLASH_ACCESS_KEY: "${{ secrets.VITE_UNSPLASH_ACCESS_KEY }}"
 
       - name: Write the CRX signing key
         run: echo "${{ secrets.CRX_SIGNING_KEY }}" > new-tab.crx.pem
@@ -61,8 +58,8 @@ jobs:
       - name: Pack extension for Firefox
         run: npm run pack:firefox
         env:
-          WEB_EXT_API_KEY: ${{ secrets.WEB_EXT_API_KEY }}
-          WEB_EXT_API_SECRET: ${{ secrets.WEB_EXT_API_SECRET }}
+          WEB_EXT_API_KEY: "${{ secrets.WEB_EXT_API_KEY }}"
+          WEB_EXT_API_SECRET: "${{ secrets.WEB_EXT_API_SECRET }}"
 
       - name: Upload the packed Chrome extension (CRX)
         uses: svenstaro/upload-release-action@v2
@@ -70,7 +67,7 @@ jobs:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: new-tab.crx
           asset_name: new-tab.crx.disabled
-          tag: ${{ github.ref }}
+          tag: "${{ github.event.release.tag_name }}"
 
       - name: Upload the packed Chrome extension (ZIP)
         uses: svenstaro/upload-release-action@v2
@@ -78,7 +75,7 @@ jobs:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: new-tab.zip
           asset_name: new-tab.zip
-          tag: ${{ github.ref }}
+          tag: "${{ github.event.release.tag_name }}"
 
       - name: Upload the XPI
         uses: svenstaro/upload-release-action@v2
@@ -86,4 +83,4 @@ jobs:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: new-tab.xpi
           asset_name: new-tab.xpi
-          tag: ${{ github.ref }}
+          tag: "${{ github.event.release.tag_name }}"
