@@ -31,7 +31,7 @@
     "unocss": "^66.1.4",
     "unsplash-js": "^7.0.19",
     "vite": "^6.4.1",
-    "vite-plugin-solid": "^2.11.6",
+    "vite-plugin-solid": "^2.11.10",
     "vite-tsconfig-paths": "^5.1.4",
     "web-ext": "^8.10.0",
     "webextension-polyfill": "^0.12.0"
