@@ -18,10 +18,10 @@ jobs:
     timeout-minutes: 30
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Setup NodeJS
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: lts/*
 
@@ -31,7 +31,7 @@ jobs:
           NODE_ENV: production
 
       - name: Setup Go
-        uses: actions/setup-go@v5
+        uses: actions/setup-go@v6
 
       - name: Install CRX3
         run: go install github.com/mediabuyerbot/go-crx3/crx3@v1.6.0
