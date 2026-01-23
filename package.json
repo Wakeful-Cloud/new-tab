@@ -22,7 +22,7 @@
     "@unocss/preset-wind4": "^66.5.12",
     "@unocss/transformer-directives": "^66.5.12",
     "idb-keyval": "^6.2.2",
-    "lodash-es": "^4.17.22",
+    "lodash-es": "^4.17.23",
     "phosphor-solid": "^1.1.5",
     "solid-devtools": "^0.34.4",
     "solid-js": "^1.9.10",
