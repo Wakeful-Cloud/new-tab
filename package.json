@@ -25,7 +25,7 @@
     "lodash-es": "^4.17.23",
     "phosphor-solid": "^1.1.5",
     "solid-devtools": "^0.34.4",
-    "solid-js": "^1.9.10",
+    "solid-js": "^1.9.11",
     "typescript": "^5.9.3",
     "unocss": "^66.5.12",
     "unsplash-js": "^7.0.20",
