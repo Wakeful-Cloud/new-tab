@@ -1,11 +1,17 @@
 version: 2
+multi-ecosystem-groups:
+  updates:
+    schedule:
+      interval: yearly
 updates:
   - package-ecosystem: github-actions
     directory: /
-    schedule:
-      interval: yearly
+    patterns:
+      - "*"
+    multi-ecosystem-group: updates
 
   - package-ecosystem: npm
     directory: /
-    schedule:
-      interval: yearly
+    patterns:
+      - "*"
+    multi-ecosystem-group: updates
