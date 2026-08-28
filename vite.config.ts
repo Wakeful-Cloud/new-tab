@@ -44,7 +44,7 @@ export default defineConfig({
         },
         content_security_policy: {
           extension_pages:
-            "default-src 'self'; connect-src 'self' data: https://api.pexels.com https://images.pexels.com https://api.unsplash.com https://images.unsplash.com; img-src 'self' data:",
+            "default-src 'self'; connect-src 'self' data: https://api.pexels.com https://images.pexels.com https://api.unsplash.com https://images.unsplash.com; img-src 'self' data:; style-src 'self' 'sha256-6iIa14FFXgmf+2rpX7H7iLFuV/PEgtYHjl+5YRBnDVA=';",
         },
         description: pkg.description,
         developer: {

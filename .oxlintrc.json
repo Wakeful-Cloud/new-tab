@@ -50,6 +50,7 @@
     "no-optional-chaining": "off",
     "no-plusplus": "off",
     "no-ternary": "off",
+    "one-var": "off",
     "oxc/no-rest-spread-properties": "off",
     "prefer-named-capture-group": "off",
     "sort-keys": "warn",

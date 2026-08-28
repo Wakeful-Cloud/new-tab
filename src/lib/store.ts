@@ -31,7 +31,7 @@ export const useSettingStore = defineStore("settings", () => {
 
   // Refs
   // oxlint-disable-next-line typescript/no-invalid-void-type
-  const {resolve: settingsLoaded} = Promise.withResolvers<void>();
+  const {promise: settingsLoaded, resolve: resolveSettingsLoaded} = Promise.withResolvers<void>();
   const settings = ref(structuredClone(defaultSettings));
   const test = ref(0);
 
@@ -74,7 +74,7 @@ export const useSettingStore = defineStore("settings", () => {
       // Load the settings from local storage
       const data = await browser.storage.local.get(SETTINGS_STORAGE_KEY);
       if (data[SETTINGS_STORAGE_KEY] !== undefined) {
-        settings.value = data[SETTINGS_STORAGE_KEY];
+        settings.value = JSON.parse(data[SETTINGS_STORAGE_KEY]);
       }
     } else {
       // Load the settings from local storage
@@ -85,7 +85,7 @@ export const useSettingStore = defineStore("settings", () => {
     }
 
     // Resolve the settings loaded promise
-    settingsLoaded();
+    resolveSettingsLoaded();
   })();
 
   return {
