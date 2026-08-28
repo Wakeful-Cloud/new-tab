@@ -32,6 +32,8 @@ jobs:
 
       - name: Setup Go
         uses: actions/setup-go@v7
+        with:
+          go-version: stable
 
       - name: Install CRX3
         run: go install github.com/mediabuyerbot/go-crx3/crx3@v1.7.0
