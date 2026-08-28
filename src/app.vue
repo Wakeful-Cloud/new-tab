@@ -1,17 +1,17 @@
 <script setup lang="ts">
-import {Image, RefreshCw, Settings} from "@lucide/vue";
-import {DnDProvider} from "@vue-dnd-kit/core";
-import {capitalize} from "es-toolkit";
-import {computed, onBeforeUnmount, onMounted, ref, watchEffect} from "vue";
+import { Image, RefreshCw, Settings } from "@lucide/vue";
+import { DnDProvider } from "@vue-dnd-kit/core";
+import { capitalize } from "es-toolkit";
+import { computed, onBeforeUnmount, onMounted, ref, watchEffect } from "vue";
 
 import Background from "~/components/background.vue";
 import Drawer from "~/components/drawer.vue";
 import GeneralMode from "~/components/general-mode.vue";
+import ShortcutList from "~/components/shortcut-list.vue";
 import ShortcutMode from "~/components/shortcut-mode.vue";
-import Shortcut from "~/components/shortcut.vue";
-import {generateBackground} from "~/lib/background";
-import {useSettingStore} from "~/lib/store";
-import {BackgroundProvider, type ShortcutMetadata} from "~/lib/types";
+import { generateBackground } from "~/lib/background";
+import { useSettingStore } from "~/lib/store";
+import { BackgroundProvider, type ShortcutMetadata } from "~/lib/types";
 
 /**
  * Drawer view modes
@@ -151,6 +151,18 @@ const onMetadataDelete = () => {
   drawerOpen.value = false;
 };
 
+/**
+ * Save a reordered shortcut list
+ * @param shortcuts The shortcuts in their new order
+ */
+const onShortcutsReorder = (shortcuts: ShortcutMetadata[]) => {
+  // Update global store
+  settingStore.setSettings({
+    ...settingStore.settings,
+    shortcuts,
+  });
+};
+
 // Effects
 watchEffect(() => {
   document.documentElement.classList.toggle("dark", dark.value);
@@ -201,12 +213,11 @@ onBeforeUnmount(() => {
     <RefreshCw class="h-6 w-6" />
   </button>
 
-  <DnDProvider class="centered-row flex-wrap m-12">
-    <Shortcut
-      v-for="item in settingStore.settings.shortcuts"
-      :key="item.id"
-      :metadata="item"
-      :on-edit="() => onEdit(item)"
+  <DnDProvider>
+    <ShortcutList
+      :items="settingStore.settings.shortcuts"
+      :on-edit="onEdit"
+      :on-reorder="onShortcutsReorder"
     />
   </DnDProvider>
 
