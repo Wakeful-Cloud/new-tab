@@ -169,11 +169,11 @@ export interface BackgroundSettings {
 }
 
 /**
- * Global store
+ * Global settings
  */
-export interface Store {
+export interface Settings {
   /**
-   * Store version
+   * App version
    */
   version: string;
 

@@ -2,66 +2,97 @@
  * @file State stores
  */
 
-// Imports
-import {cloneDeep} from "lodash-es";
-import {createStore, StoreSetter, unwrap} from "solid-js/store";
+import {defineStore} from "pinia";
+import {ref, watch} from "vue";
 
-import {get, set} from "~/lib/storage";
-import {BackgroundCategory, BackgroundProvider, Store} from "~/lib/types";
+import {type Settings, BackgroundCategory, BackgroundProvider} from "~/lib/types";
 
 /**
- * Store storage key
+ * Settings storage key
  */
-const STORE_STORAGE_KEY = "io.github.wakeful-cloud.new-tab.store";
+const SETTINGS_STORAGE_KEY = "io.github.wakeful-cloud.new-tab.settings";
 
 /**
- * Default global store value
+ * Settings store
  */
-const defaultStore = {
-  background: {
-    category: BackgroundCategory.NONE,
-    previousIDs: [],
-    provider: BackgroundProvider.PEXELS,
-    // 1 hour
-    refreshAfter: 1000 * 60 * 60,
-  },
-  shortcuts: [],
-  version: import.meta.env.VERSION,
-} as Store;
+export const useSettingStore = defineStore("settings", () => {
+  // Constants
+  const defaultSettings = {
+    background: {
+      category: BackgroundCategory.NONE,
+      previousIDs: [],
+      provider: BackgroundProvider.PEXELS,
+      // 1 hour
+      refreshAfter: 1000 * 60 * 60,
+    },
+    shortcuts: [],
+    version: import.meta.env.VERSION,
+  } as Settings;
 
-/**
- * Global store
- */
-const [store, baseSetStore] = createStore<Store>(cloneDeep(defaultStore));
+  // Refs
+  // oxlint-disable-next-line typescript/no-invalid-void-type
+  const {resolve: settingsLoaded} = Promise.withResolvers<void>();
+  const settings = ref(structuredClone(defaultSettings));
+  const test = ref(0);
 
-export {store};
+  // Methods
+  /**
+   * Sets the settings to the given value
+   * @param newSettings The new settings to set
+   */
+  const setSettings = (newSettings: Settings) => {
+    settings.value = newSettings;
+  };
 
-/**
- * Initialize the global store
- */
-export const initializeStore = async () => {
-  // Get initial value from storage
-  const initial = await get<Store>(STORE_STORAGE_KEY);
+  /**
+   * Resets the settings to the default value
+   */
+  const resetSettings = () => {
+    settings.value = structuredClone(defaultSettings);
+  };
 
-  if (initial !== undefined) {
-    baseSetStore(initial);
-  }
-};
+  // Effects
+  watch(settings, async newSettings => {
+    // Wait for the settings to load before saving
+    await settingsLoaded;
 
-/**
- * Set the global store
- * @param setter Store setter
- */
-export const setStore = (setter: StoreSetter<Store, []>) => {
-  // Update the store
-  baseSetStore(setter);
+    // Serialize the settings to JSON
+    const serializedSettings = JSON.stringify(newSettings);
 
-  // Save
-  set<Store>(STORE_STORAGE_KEY, unwrap(store));
-};
+    if (typeof browser !== "undefined" && browser.storage !== undefined) {
+      // Save the settings to local storage
+      await browser.storage.local.set({[SETTINGS_STORAGE_KEY]: serializedSettings});
+    } else {
+      // Save the settings to local storage
+      globalThis.localStorage.setItem(SETTINGS_STORAGE_KEY, serializedSettings);
+    }
+  });
 
-/**
- * Reset the global store
- * @returns Nothing
- */
-export const resetStore = () => setStore(cloneDeep(defaultStore));
+  // Lifecycle hooks
+  (async () => {
+    if (typeof browser !== "undefined" && browser.storage !== undefined) {
+      // Load the settings from local storage
+      const data = await browser.storage.local.get(SETTINGS_STORAGE_KEY);
+      if (data[SETTINGS_STORAGE_KEY] !== undefined) {
+        settings.value = data[SETTINGS_STORAGE_KEY];
+      }
+    } else {
+      // Load the settings from local storage
+      const data = globalThis.localStorage.getItem(SETTINGS_STORAGE_KEY);
+      if (data !== null) {
+        settings.value = JSON.parse(data);
+      }
+    }
+
+    // Resolve the settings loaded promise
+    settingsLoaded();
+  })();
+
+  return {
+    resetSettings,
+    setSettings,
+    settings,
+    settingsLoaded,
+    test,
+  };
+});

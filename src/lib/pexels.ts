@@ -226,15 +226,22 @@ export interface SearchResponse {
  */
 export class PexelsClient {
   /**
+   * Pexels API key
+   */
+  private apiKey: string;
+
+  /**
    * Create a new Pexels API client
    * @param apiKey Pexels API key
    */
-  constructor(
+  public constructor(
     /**
      * Pexels API key
      */
-    private apiKey: string,
-  ) {}
+    apiKey: string,
+  ) {
+    this.apiKey = apiKey;
+  }
 
   /**
    * Fetch from the Pexels API
@@ -246,6 +253,7 @@ export class PexelsClient {
    */
   private async fetchPexels<T>(
     path: string,
+    // oxlint-disable-next-line typescript/no-explicit-any
     parameters: Record<string, any>,
     init?: RequestInit,
   ): Promise<T> {
@@ -271,9 +279,7 @@ export class PexelsClient {
       // Get the body
       const body = await res.text();
 
-      throw new Error(
-        `Pexels API returned status code: ${res.status} and body: ${body}`,
-      );
+      throw new Error(`Pexels API returned status code: ${res.status} and body: ${body}`);
     }
 
     // Parse the response
@@ -287,13 +293,8 @@ export class PexelsClient {
    * @param parameters Search parameters
    * @returns Search response
    */
-  public async searchPhotos(
-    parameters: SearchParameters,
-  ): Promise<SearchResponse> {
-    const res = await this.fetchPexels<SearchResponse>(
-      "/v1/search",
-      parameters,
-    );
+  public async searchPhotos(parameters: SearchParameters): Promise<SearchResponse> {
+    const res = await this.fetchPexels<SearchResponse>("/v1/search", parameters);
 
     return res;
   }

@@ -1,0 +1,64 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "categories": {
+    "correctness": "error",
+    "pedantic": "warn",
+    "perf": "warn",
+    "restriction": "error",
+    "style": "warn",
+    "suspicious": "warn"
+  },
+  "env": {
+    "builtin": true
+  },
+  "plugins": [
+    "typescript",
+    "unicorn",
+    "oxc",
+    "vue"
+  ],
+  "rules": {
+    "capitalized-comments": "off",
+    "complexity": "off",
+    "eqeqeq": "error",
+    "eslint/id-length": "off",
+    "eslint/no-restricted-imports": [
+      "error",
+      {
+        "patterns": [
+          {
+            "group": [
+              "./**",
+              "../**"
+            ],
+            "message": "Do not use relative imports. Use ~/ prefix for absolute imports instead."
+          }
+        ]
+      }
+    ],
+    "eslint/no-undefined": "off",
+    "eslint/sort-imports": "off",
+    "max-depth": "off",
+    "max-lines": "off",
+    "max-lines-per-function": "off",
+    "max-params": "off",
+    "max-statements": "off",
+    "no-async-await": "off",
+    "no-await-in-loop": "off",
+    "no-continue": "off",
+    "no-magic-numbers": "off",
+    "no-optional-chaining": "off",
+    "no-plusplus": "off",
+    "no-ternary": "off",
+    "oxc/no-rest-spread-properties": "off",
+    "prefer-named-capture-group": "off",
+    "sort-keys": "warn",
+    "typescript/explicit-function-return-type": "off",
+    "typescript/explicit-module-boundary-types": "off",
+    "typescript/no-non-null-assertion": "off",
+    "unicorn/no-useless-undefined": "off",
+    "unicorn/prefer-number-coercion": "off",
+    "vue/max-props": "off",
+    "vue/require-default-prop": "off"
+  }
+}

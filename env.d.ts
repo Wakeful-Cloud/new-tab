@@ -1,9 +1,13 @@
 interface ImportMetaEnv {
+  /**
+   * Extension version
+   */
   readonly VERSION: string;
 }
 
 interface ImportMeta {
+  /**
+   * Import meta environment
+   */
   readonly env: ImportMetaEnv;
 }
-
-declare module "eslint-plugin-sort-keys-fix" {}

@@ -1,0 +1,11 @@
+{
+  "$schema": "./node_modules/oxfmt/configuration_schema.json",
+  "arrowParens": "avoid",
+  "bracketSameLine": false,
+  "bracketSpacing": false,
+  "htmlWhitespaceSensitivity": "strict",
+  "ignorePatterns": [],
+  "multilineArraysWrapThreshold": 2,
+  "printWidth": 100,
+  "sortPackageJson": false
+}

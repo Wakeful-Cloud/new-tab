@@ -1,18 +1,19 @@
 {
+  "extensions": {
+    "recommendations": [
+      "EditorConfig.EditorConfig",
+      "Vue.volar",
+      "bierner.github-markdown-preview",
+      "oxc.oxc-vscode",
+      "seatonjiang.gitmoji-vscode"
+    ]
+  },
   "folders": [
     {
       "path": ".",
       "name": "root"
     }
   ],
-  "extensions": {
-    "recommendations": [
-      "EditorConfig.EditorConfig",
-      "antfu.unocss",
-      "dbaeumer.vscode-eslint",
-      "esbenp.prettier-vscode"
-    ]
-  },
   "launch": {
     "version": "0.2.0",
     "configurations": [
@@ -48,8 +49,33 @@
   "settings": {
     "editor.formatOnSave": true,
     "editor.formatOnSaveMode": "file",
-    "editor.codeActionsOnSave": [
-      "source.fixAll"
-    ]
+    "editor.codeActionsOnSave": {
+      "source.fixAll": "always",
+      "source.organizeImports": "always"
+    },
+    "editor.rulers": [
+      100
+    ],
+    "editor.wordWrap": "wordWrapColumn",
+    "editor.wordWrapColumn": 100,
+    "[markdown]": {
+      "editor.wordWrap": "wordWrapColumn",
+      "editor.wordWrapColumn": 100
+    },
+    "[html]": {
+      "editor.defaultFormatter": "oxc.oxc-vscode",
+    },
+    "[css]": {
+      "editor.defaultFormatter": "oxc.oxc-vscode",
+    },
+    "[javascript]": {
+      "editor.defaultFormatter": "oxc.oxc-vscode",
+    },
+    "[typescript]": {
+      "editor.defaultFormatter": "oxc.oxc-vscode",
+    },
+    "[vue]": {
+      "editor.defaultFormatter": "oxc.oxc-vscode",
+    }
   }
 }

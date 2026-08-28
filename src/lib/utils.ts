@@ -11,11 +11,11 @@ export const createDataURL = async (raw: Blob) => {
   const reader = new FileReader();
   reader.readAsDataURL(raw);
 
-  await new Promise(resolve =>
+  await new Promise(resolve => {
     reader.addEventListener("load", resolve, {
       once: true,
-    }),
-  );
+    });
+  });
 
   return reader.result as string;
 };

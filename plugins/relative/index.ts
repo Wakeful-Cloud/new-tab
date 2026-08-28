@@ -2,10 +2,9 @@
  * @file Vite relative path plugin
  */
 
-// Imports
-import {dirname, join, relative} from "node:path";
+import path from "node:path";
 
-import {Plugin, ResolvedConfig} from "vite";
+import type {Plugin, ResolvedConfig} from "vite";
 
 /**
  * Vite relative path plugin factory
@@ -13,7 +12,7 @@ import {Plugin, ResolvedConfig} from "vite";
  */
 const plugin = () => {
   // State
-  let config: ResolvedConfig;
+  let config: ResolvedConfig | undefined = undefined;
 
   return {
     apply: "build",
@@ -24,17 +23,22 @@ const plugin = () => {
     enforce: "post",
     name: "relative",
     transformIndexHtml: (html, ctx) => {
+      // Check if the config is undefined
+      if (config === undefined) {
+        throw new Error("Config is undefined!");
+      }
+
       // Get the HTML path
-      const absolutePath = join(config.build.outDir, ctx.path);
+      const absolutePath = path.join(config.build.outDir, ctx.path);
 
       // Get the relative path
-      const relativePath = join(
-        relative(dirname(absolutePath), config.build.outDir),
+      const relativePath = path.join(
+        path.relative(path.dirname(absolutePath), config.build.outDir),
         "assets",
       );
 
       // Replace the paths
-      return html.replace(/(?<=")\/assets(?=\/[^"]+)/gu, relativePath);
+      return html.replaceAll(/(?<=")\/assets(?=\/[^"]+)/gu, relativePath);
     },
   } as Plugin;
 };

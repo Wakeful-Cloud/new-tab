@@ -2,8 +2,7 @@
  * @file TypeScript types
  */
 
-// Imports
-import type {Manifest} from "webextension-polyfill";
+import "chrome";
 
 /**
  * Plugin options
@@ -12,7 +11,7 @@ export interface Options {
   /**
    * Manifest object
    */
-  manifest: Manifest.WebExtensionManifest;
+  manifest: chrome.runtime.Manifest;
 
   /**
    * Destination path

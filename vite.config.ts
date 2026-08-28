@@ -1,24 +1,17 @@
-/* eslint-disable camelcase */
+// oxlint-disable no-restricted-imports
 /**
  * @file Vite config
  */
 
-// Imports
-import {dirname, join} from "node:path";
-import {fileURLToPath} from "node:url";
-
-import solidDevtools from "solid-devtools/vite";
+import vue from "@vitejs/plugin-vue";
 import unoCSS from "unocss/vite";
 import {defineConfig} from "vite";
-import solid from "vite-plugin-solid";
-import paths from "vite-tsconfig-paths";
-
-import pkg from "./package.json";
-import manifest from "./plugins/manifest";
-import relative from "./plugins/relative";
+import pkg from "./package.json" with {type: "json"};
+import manifest from "./plugins/manifest/index.ts";
+import relative from "./plugins/relative/index.ts";
 
 // Get the root directory
-export const root = dirname(fileURLToPath(import.meta.url));
+export const root = import.meta.dirname;
 
 // Export
 export default defineConfig({
@@ -31,17 +24,15 @@ export default defineConfig({
     "import.meta.env.VERSION": JSON.stringify(pkg.version),
   },
   plugins: [
-    solidDevtools(),
-    solid(),
+    vue(),
     unoCSS(),
-    paths({
-      projects: [join(root, "tsconfig.json")],
-    }),
     manifest({
       manifest: {
-        author: "Wakeful Cloud",
         browser_specific_settings: {
           gecko: {
+            data_collection_permissions: {
+              required: ["none"],
+            },
             id: "extension@io.github.wakeful-cloud.new-tab",
           },
         },
@@ -62,11 +53,16 @@ export default defineConfig({
         },
         homepage_url: "https://github.com/Wakeful-Cloud/new-tab",
         manifest_version: 3,
+        // See https://developer.chrome.com/docs/extensions/develop/concepts/browser-namespace#when
+        minimum_chrome_version: "148",
         name: "New Tab",
-        permissions: ["storage", "unlimitedStorage"],
+        permissions: ["storage"],
         version: pkg.version,
       },
     }),
     relative(),
   ],
+  resolve: {
+    tsconfigPaths: true,
+  },
 });

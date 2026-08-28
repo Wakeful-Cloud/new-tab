@@ -3,32 +3,30 @@
     /* Language and Environment */
     "target": "ESNext",
     /* Modules */
+    "allowImportingTsExtensions": true,
     "module": "ESNext",
-    "moduleResolution": "Node",
+    "moduleResolution": "Bundler",
     "resolveJsonModule": true,
     "paths": {
       "~/*": [
         "./src/*"
       ]
     },
-    "baseUrl": ".",
     "types": [
-      "chrome",
+      "firefox-webext-browser",
+      "node",
       "vite/client"
     ],
     /* JavaScript Support */
     "allowJs": true,
     "checkJs": true,
     /* Emit */
-    "newLine": "lf",
-    "sourceMap": true,
+    "noEmit": true,
     /* Language and Environment */
     "lib": [
       "ESNext",
       "DOM"
     ],
-    "jsx": "preserve",
-    "jsxImportSource": "solid-js",
     /* Interop Constraints */
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
@@ -54,12 +52,7 @@
     "skipLibCheck": true
   },
   "include": [
-    "**/*.d.ts",
-    "**/*.js",
     "**/*.ts",
-    "**/*.tsx"
-  ],
-  "exclude": [
-    "dist/*"
+    "**/*.vue"
   ]
 }

@@ -2,7 +2,7 @@
 
 [![GitHub Continuous Deployment Status](https://img.shields.io/github/actions/workflow/status/wakeful-cloud/new-tab/cd.yml?label=Deployment&style=flat-square)](https://github.com/wakeful-cloud/new-tab/actions/workflows/cd.yml)
 
-A simple browser extension that displays a random image along with bookmarks on the new tab page. Compatible with all Chromium-based browsers (Brave, Chrome, Edge, Opera, Vivaldi, etc.) and Firefox. Built with [Solid](https://solidjs.com), [UnoCSS](https://unocss.dev)/[Tailwind](https://tailwindcss.com), and [Vite](https://vitejs.dev).
+A simple browser extension that displays a random image along with bookmarks on the new tab page. Compatible with all Chromium-based browsers (Brave, Chrome, Edge, Opera, Vivaldi, etc.) and Firefox. Built with [VueJS](https://vuejs.org), [UnoCSS](https://unocss.dev)/[Tailwind](https://tailwindcss.com), and [Vite](https://vitejs.dev).
 
 ![Screenshot 1](screenshots/screenshot-1.jpg)
 
@@ -50,28 +50,21 @@ A simple browser extension that displays a random image along with bookmarks on 
 #### Setup
 
 1. Clone the repository:
-
-```sh
-git clone https://github.com/wakeful-cloud/new-tab.git
-```
-
+   ```shell
+   git clone https://github.com/wakeful-cloud/new-tab.git
+   ```
 2. Install dependencies:
-
-```sh
-npm install
-```
-
+   ```shell
+   npm install
+   ```
 3. Start the development server:
-
-```sh
-npm run dev
-```
-
+   ```shell
+   npm run dev
+   ```
 4. Build the extension:
-
-```sh
-npm run build
-```
+   ```shell
+   npm run build
+   ```
 
 #### Environment Variables
 

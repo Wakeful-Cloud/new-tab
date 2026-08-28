@@ -1,15 +1,13 @@
+// oxlint-disable no-restricted-imports
 /**
  * @file Vite manifest plugin
  */
 
-// Imports
+import {merge} from "es-toolkit";
 import {mkdir, writeFile} from "node:fs/promises";
-import {dirname, join} from "node:path";
-
-import {merge} from "lodash-es";
-import {Plugin, ResolvedConfig} from "vite";
-
-import {Options} from "./types";
+import path from "node:path";
+import type {Plugin, ResolvedConfig} from "vite";
+import type {Options} from "./types.ts";
 
 /**
  * Vite manifest plugin factory
@@ -26,10 +24,15 @@ const plugin = (options: Options) => {
   ) as Options;
 
   // State
-  let config: ResolvedConfig;
+  let config: ResolvedConfig | undefined = undefined;
 
   return {
     closeBundle: async () => {
+      // Check if the config is undefined
+      if (config === undefined) {
+        throw new Error("Config is undefined!");
+      }
+
       // Ensure the manifest exists
       if (resolvedOptions.manifest === undefined) {
         throw new Error("Manifest is undefined!");
@@ -39,10 +42,10 @@ const plugin = (options: Options) => {
       const str = JSON.stringify(resolvedOptions.manifest, undefined, 2);
 
       // Get the destination path
-      const dst = join(config.build.outDir, resolvedOptions.dst!);
+      const dst = path.join(config.build.outDir, resolvedOptions.dst!);
 
       // Create the manifest folder
-      await mkdir(dirname(dst), {
+      await mkdir(path.dirname(dst), {
         recursive: true,
       });
 
